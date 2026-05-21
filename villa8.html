@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VILLA 8 – บางแสน</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --ocean-deep: #004e7c; --ocean-mid: #0077b6; --teal: #2ec4b6; --teal-dark: #0096a0; --text-dark: #1a2e3b; --text-mid: #4a6278; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Kanit', sans-serif; background: #f0f9ff; color: var(--text-dark); overflow-x: hidden; }
+
+
+#backBar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); box-shadow: 0 2px 16px rgba(0,77,124,0.1); display: flex; align-items: center; gap: 8px; padding: 0 12px; height: 54px; overflow: hidden; }
+.back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 30px; background: linear-gradient(135deg, #e8f6ff, #d6eefa); border: 1.5px solid rgba(0,150,200,0.2); color: var(--ocean-deep); font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+.back-btn:hover { background: linear-gradient(135deg, #d0edfa, #bee4f5); transform: translateX(-2px); }
+.back-title { font-size: 14px; font-weight: 800; color: var(--ocean-deep); white-space: nowrap; }
+.back-sub { font-size: 11px; color: var(--text-mid); white-space: nowrap; }
+@media (max-width: 480px) { .back-sub { display: none; } }
+@media (max-width: 360px) { .back-title { display: none; } }
+@media (max-width: 500px) { .back-btn-text { display: none; } }
+@media (min-width: 501px) { .back-btn-icon { display: none; } }
+
+/* PHOTO SLIDER */
+#photoSlider { display: none !important; }
+@media (max-width: 600px) { #photoSlider { height: 220px; } }
+#sliderTrack { display: flex; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); height: 100%; }
+.ps-slide { flex-shrink: 0; width: 100%; height: 100%; }
+.ps-slide img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
+.ps-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.22); border: 1.5px solid rgba(255,255,255,0.5); backdrop-filter: blur(6px); color: white; font-size: 20px; width: 42px; height: 42px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.18s; }
+.ps-btn:hover { background: rgba(255,255,255,0.4); }
+.ps-btn.prev { left: 12px; } .ps-btn.next { right: 12px; }
+.ps-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+.ps-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; cursor: pointer; transition: all 0.2s; }
+.ps-dot.active { background: white; width: 22px; border-radius: 4px; }
+.ps-count { position: absolute; top: 12px; right: 14px; background: rgba(0,0,0,0.45); color: white; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+
+/* PHOTO GRID */
+.photo-grid-section { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,77,124,0.07); padding: 18px; margin-bottom: 14px; }
+.photo-grid-title { font-size: 13px; font-weight: 700; color: #4a6278; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
+
+/* ─── PHOTO CATEGORY TABS ─── */
+.photo-tab-bar {
+  display: flex; gap: 6px; flex-wrap: nowrap;
+  overflow-x: auto; margin: 0 0 14px;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+.photo-tab-bar::-webkit-scrollbar { display: none; }
+.ph-tab {
+  padding: 7px 14px; border-radius: 20px;
+  border: 1.5px solid #e5e7eb; background: white;
+  color: #6b7280; font-family: 'Kanit', sans-serif;
+  font-size: 12px; font-weight: 400; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+}
+.ph-tab:hover { border-color: #111827; color: #111827; }
+.ph-tab.active { background: #111827; border-color: #111827; color: white; font-weight: 500; }
+.ph-count {
+  display: inline-block; background: rgba(255,255,255,0.2);
+  border-radius: 10px; padding: 0 6px; margin-left: 3px; font-size: 10px;
+}
+.ph-tab:not(.active) .ph-count { background: #f3f4f6; color: #9ca3af; }
+
+/* Photo grid items */
+.photo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+@media (max-width: 400px) { .photo-grid { grid-template-columns: repeat(2,1fr); } }
+.photo-grid-item { aspect-ratio: 4/3; border-radius: 8px; overflow: hidden; cursor: pointer; position: relative; }
+.photo-grid-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.22s; }
+.photo-grid-item:hover img { transform: scale(1.06); }
+.photo-grid-item::after { content: '🔍'; position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; font-size: 22px; opacity: 0; transition: all 0.2s; }
+.photo-grid-item:hover::after { background: rgba(0,0,0,0.22); opacity: 1; }
+
+/* Empty state for filtered grid */
+.photo-empty {
+  grid-column: 1/-1; text-align: center; padding: 32px 20px;
+  color: #9ca3af; font-size: 13px;
+}
+.photo-empty .pe-icon { font-size: 28px; margin-bottom: 8px; opacity: 0.5; }
+
+.main-wrap { max-width: unset; margin: unset; padding: 0; }
+.villa-header-mobile { display: none; }
+.villa-header-desktop { display: block; margin-bottom: 14px; }
+.villa-badge { display: inline-block; background: linear-gradient(135deg, #00c4e0, #009eb8); color: white; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; margin-bottom: 10px; }
+.villa-name { font-family: 'Kanit', sans-serif; font-size: clamp(22px,6vw,36px); font-weight: 900; color: var(--ocean-deep); line-height: 1.1; margin-bottom: 4px; }
+.villa-sub { font-size: 13px; color: var(--text-mid); margin-bottom: 18px; }
+
+.price-section { background: linear-gradient(135deg, #e8fff8, #d4f8f0); border: 2px solid rgba(0,184,156,0.2); border-radius: 18px; padding: 18px 20px; margin-bottom: 20px; }
+.price-section-title { font-size: 12px; font-weight: 700; color: #4a8a7e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.price-table { width: 100%; border-collapse: collapse; }
+.price-table tr { border-bottom: 1px solid rgba(0,150,130,0.1); }
+.price-table tr:last-child { border-bottom: none; }
+.price-table td { padding: 8px 4px; font-size: 14px; }
+.price-table td:first-child { color: var(--text-mid); font-weight: 500; }
+.price-table td:last-child { text-align: right; font-weight: 800; color: #00b89c; font-size: 16px; }
+.price-note { font-size: 11px; color: #5aa897; margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,150,130,0.2); }
+
+.actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.btn-contact { flex: 1; min-width: 140px; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 14px 20px; background: linear-gradient(135deg, #00c4e0, #009eb8); border: none; border-radius: 14px; color: white; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 16px rgba(0,180,216,0.3); transition: all 0.2s; text-decoration: none; text-align: center; }
+.btn-contact:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,180,216,0.4); }
+.btn-map { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 14px 20px; background: linear-gradient(135deg, #ff6b35, #f7931e); border: none; border-radius: 14px; color: white; font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 16px rgba(255,107,53,0.3); transition: all 0.2s; text-decoration: none; }
+.btn-map:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,53,0.4); }
+
+.sec-block { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,77,124,0.07); padding: 18px; margin-bottom: 14px; }
+.sec-title { font-size: 13px; font-weight: 700; color: var(--text-mid); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; display: flex; align-items: center; gap: 7px; }
+.chip-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { background: linear-gradient(135deg, #f0fdff, #e6f8fb); border: 1px solid rgba(0,180,216,0.18); border-radius: 30px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: var(--ocean-deep); display: flex; align-items: center; gap: 5px; }
+
+.room-floor { margin-bottom: 14px; }
+.room-floor-title { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f0f5fb; }
+.room-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f8fbff; }
+.room-row:last-child { border-bottom: none; }
+.room-num { width: 28px; height: 28px; background: linear-gradient(135deg, #00c4e0, #009eb8); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+.room-detail { font-size: 13px; font-weight: 600; color: var(--text-dark); flex: 1; }
+.room-tag { background: #fff3cd; color: #7a4f00; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 12px; white-space: nowrap; }
+.note-box { background: linear-gradient(135deg, #fff8e8, #fff3cd); border: 1.5px solid rgba(244,168,0,0.3); border-radius: 12px; padding: 12px 14px; font-size: 12px; color: #7a4f00; line-height: 1.7; margin-top: 10px; }
+.location-box { background: linear-gradient(135deg, #fff8f0, #fff3e8); border: 1.5px solid rgba(255,107,53,0.2); border-radius: 14px; padding: 14px 16px; font-size: 13px; color: #7a3d00; line-height: 1.9; }
+.location-box strong { color: #d4600a; }
+
+.cal-wrap { background: #f6fbff; border: 1.5px solid #cde8f0; border-radius: 16px; overflow: hidden; margin-bottom: 14px; }
+.cal-topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--ocean-mid); }
+.cal-month { font-weight: 700; font-size: 15px; color: white; }
+.cal-arr { width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.18); border: 1.5px solid rgba(255,255,255,0.4); color: white; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+.cal-arr:hover { background: rgba(255,255,255,0.32); }
+.cal-inner { padding: 10px 12px; }
+.cal-hrow { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin-bottom: 4px; }
+.cal-hcell { text-align: center; font-size: 10px; font-weight: 700; color: #888; padding: 4px 0; }
+.cal-brow { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+.cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; font-size: 12px; font-weight: 600; line-height: 1.2; gap: 1px; cursor: pointer; transition: transform 0.12s, box-shadow 0.12s; user-select: none; }
+.cal-day:not(.empty):not(.blocked):hover { transform: scale(1.15); box-shadow: 0 3px 12px rgba(0,0,0,0.18); z-index: 5; }
+.cal-day.empty { background: transparent; cursor: default; pointer-events: none; }
+.cal-day.blocked { cursor: not-allowed; opacity: 0.85; pointer-events: none; }
+.cal-day.available { background: #7de8c8; color: #1a6650; }
+.cal-day.pending { background: #ffd3b6; color: #7a3d00; }
+.cal-day.booked { background: #ff8b94; color: white; }
+.cal-day.holiday { background: #ffeb3b; color: #7a5200; }
+.cal-day.maintenance { background: #ff9800; color: white; }
+.cal-price { font-size: 7px; font-weight: 500; opacity: 0.82; line-height: 1; }
+.cal-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 10px 12px; border-top: 1px solid #e8f4f8; }
+.lg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--text-mid); }
+.lg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+.contact-box { background: linear-gradient(135deg, var(--ocean-deep), var(--teal-dark)); border-radius: 18px; padding: 22px; color: white; text-align: center; margin-bottom: 14px; }
+.contact-box h3 { font-size: 17px; font-weight: 800; margin-bottom: 5px; }
+.contact-box p { font-size: 12px; opacity: 0.85; margin-bottom: 14px; }
+.contact-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.ct-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 30px; font-size: 13px; font-weight: 800; text-decoration: none; }
+.ct-btn-fb { background: white; color: #1877f2; }
+.ct-btn-line { background: #00b900; color: white; }
+.ct-btn-phone { background: rgba(255,255,255,0.18); color: white; border: 2px solid rgba(255,255,255,0.4); }
+
+#dayPopup { display:none; position:fixed; z-index:5000; background:white; border-radius:14px; padding:12px 14px; box-shadow:0 8px 28px rgba(0,0,0,0.18); min-width:160px; }
+@keyframes popIn { from{opacity:0;transform:scale(0.88);} to{opacity:1;transform:scale(1);} }
+.dp-status { font-size:13px; font-weight:700; margin-bottom:4px; }
+/* ─── GALLERY MODAL ─── */
+#galleryModal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65); z-index: 6000;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  animation: galFadeIn 0.2s ease;
+}
+#galleryModal.show { display: flex; }
+@keyframes galFadeIn { from{opacity:0} to{opacity:1} }
+
+.gal-box {
+  background: white; border-radius: 16px;
+  width: 92vw; max-width: 900px; height: 86vh; max-height: 640px;
+  display: flex; overflow: hidden; position: relative;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.28);
+  animation: galSlideUp 0.22s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes galSlideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* Sidebar */
+.gal-sidebar {
+  width: 200px; flex-shrink: 0;
+  border-right: 1px solid #e5e7eb;
+  overflow-y: auto; padding: 16px 0;
+  background: #fff;
+}
+.gal-sidebar-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #9ca3af;
+  padding: 0 16px 10px;
+}
+.gal-cat-btn {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 16px; font-family: 'Kanit', sans-serif;
+  font-size: 13px; font-weight: 400; color: #4b5563;
+  cursor: pointer; border: none; background: transparent;
+  width: 100%; text-align: left; transition: background 0.12s;
+  border-left: 3px solid transparent;
+}
+.gal-cat-btn:hover { background: #f9fafb; color: #111827; }
+.gal-cat-btn.active {
+  background: #f3f4f6; color: #111827; font-weight: 600;
+  border-left-color: #111827;
+}
+.gal-cat-count {
+  font-size: 11px; font-weight: 600; color: #9ca3af;
+  background: #f3f4f6; border-radius: 10px;
+  padding: 1px 7px; min-width: 22px; text-align: center;
+}
+.gal-cat-btn.active .gal-cat-count { background: #e5e7eb; color: #374151; }
+
+/* Content area */
+.gal-content {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden;
+}
+.gal-content-inner {
+  flex: 1; overflow-y: auto; padding: 20px;
+}
+.gal-section-title {
+  font-size: 18px; font-weight: 700; color: #111827;
+  margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+}
+.gal-section-count { font-size: 12px; color: #9ca3af; font-weight: 400; }
+.gal-divider { height: 1px; background: #e5e7eb; margin: 10px 0 16px; }
+
+.gal-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 8px; margin-bottom: 32px;
+}
+.gal-grid.single { grid-template-columns: 1fr; max-width: 420px; }
+.gal-img-wrap {
+  border-radius: 8px; overflow: hidden; cursor: zoom-in;
+  aspect-ratio: 4/3; background: #f3f4f6;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.gal-img-wrap:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.14); }
+.gal-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Close btn */
+.gal-close {
+  position: absolute; top: 14px; right: 16px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #f3f4f6; border: none; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  color: #374151; transition: background 0.15s; z-index: 2;
+}
+.gal-close:hover { background: #e5e7eb; }
+
+/* Lightbox overlay */
+#galLightbox {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.93); z-index: 7000;
+  align-items: center; justify-content: center;
+  cursor: zoom-out;
+}
+#galLightbox.show { display: flex; }
+#galLbImg {
+  max-width: 90vw; max-height: 88vh; border-radius: 10px;
+  object-fit: contain; cursor: default;
+  animation: zoomIn 0.18s ease;
+}
+@keyframes zoomIn { from{opacity:0;transform:scale(0.86);} to{opacity:1;transform:scale(1);} }
+#galLbClose {
+  position: absolute; top: 16px; right: 20px; color: white;
+  font-size: 28px; cursor: pointer; background: rgba(255,255,255,0.12);
+  border-radius: 50%; width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center; border: none;
+}
+.gal-lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.12); border: none; color: white;
+  font-size: 24px; padding: 14px 12px; border-radius: 12px; cursor: pointer;
+}
+#galLbPrev { left: 14px; } #galLbNext { right: 14px; }
+#galLbCounter {
+  position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,0.65); font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .gal-box { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; }
+  .gal-sidebar { width: 160px; }
+  .gal-grid { grid-template-columns: repeat(2,1fr); gap: 6px; }
+}
+footer { background: var(--ocean-deep); color: rgba(255,255,255,0.7); text-align: center; padding: 20px; font-size: 12px; }
+footer strong { color: white; }
+
+/* ─── FLOATING CONTACT BUTTON ─── */
+#floatBtn { position: fixed; bottom: 24px; right: 20px; z-index: 8000; }
+.float-main { width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, #f472b6, #ec4899); box-shadow: 0 4px 20px rgba(236,72,153,0.45); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s; position: relative; z-index: 2; }
+.float-main:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(236,72,153,0.55); }
+.float-main svg { transition: transform 0.3s; }
+.float-main.open svg { transform: rotate(45deg); }
+.float-label { position: absolute; right: 68px; top: 50%; transform: translateY(-50%); background: rgba(30,30,30,0.82); color: white; font-family: 'Kanit', sans-serif; font-size: 12px; font-weight: 300; padding: 5px 14px; border-radius: 20px; white-space: nowrap; opacity: 1; pointer-events: none; backdrop-filter: blur(6px); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+#floatBtn.expanded .float-label { opacity: 0; }
+.float-items { position: absolute; bottom: 68px; right: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; pointer-events: none; }
+.float-item { display: flex; align-items: center; gap: 10px; opacity: 0; transform: translateY(20px) scale(0.8); transition: opacity 0.25s, transform 0.25s; pointer-events: none; }
+.float-item:nth-child(1) { transition-delay: 0.05s; }
+.float-item:nth-child(2) { transition-delay: 0.1s; }
+.float-item:nth-child(3) { transition-delay: 0.15s; }
+#floatBtn.expanded .float-items { pointer-events: all; }
+#floatBtn.expanded .float-item { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+.float-item-label { background: rgba(30,30,30,0.85); color: white; font-family: 'Kanit', sans-serif; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 20px; white-space: nowrap; backdrop-filter: blur(6px); }
+.float-item-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; border: none; cursor: pointer; box-shadow: 0 3px 14px rgba(0,0,0,0.2); transition: transform 0.18s, box-shadow 0.18s; flex-shrink: 0; }
+.float-item-btn:hover { transform: scale(1.1); box-shadow: 0 5px 20px rgba(0,0,0,0.28); }
+.float-item-btn.phone { background: linear-gradient(135deg, #34d399, #059669); }
+.float-item-btn.messenger { background: linear-gradient(135deg, #4f8ef7, #1877f2); }
+.float-item-btn.line { background: linear-gradient(135deg, #3ac451, #00b900); }
+#floatBackdrop { display: none; position: fixed; inset: 0; z-index: 7999; background: rgba(0,0,0,0.25); backdrop-filter: blur(2px); }
+#floatBackdrop.show { display: block; }
+
+/* ─── BANNER ─── */
+#villaBanner {
+  margin-top: 54px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+  height: 480px;
+  background: #111;
+  overflow: hidden;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 16px;
+}
+@media (max-width: 1156px) {
+  #villaBanner { margin-left: 28px; margin-right: 28px; }
+}
+@media (max-width: 860px) { #villaBanner { height: 260px; margin-left: 16px; margin-right: 16px; } }
+@media (max-width: 500px) { #villaBanner { height: 220px; } }
+
+.vb-main {
+  grid-row: 1 / 3;
+  position: relative; overflow: hidden; cursor: zoom-in;
+}
+.vb-main img, .vb-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.4s;
+}
+.vb-main:hover img, .vb-thumb:hover img { transform: scale(1.04); }
+.vb-thumb { position: relative; overflow: hidden; cursor: zoom-in; }
+
+.vb-count-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.48);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 28px; font-weight: 800;
+  cursor: pointer; transition: background 0.2s;
+}
+.vb-count-overlay:hover { background: rgba(0,0,0,0.6); }
+
+.vb-see-all {
+  position: absolute; bottom: 16px; right: 20px;
+  background: white; color: #111827;
+  font-family: 'Kanit', sans-serif; font-size: 12px; font-weight: 700;
+  padding: 7px 16px; border-radius: 8px; border: none; cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2); transition: transform 0.15s;
+}
+.vb-see-all:hover { transform: scale(1.04); }
+
+/* ─── VILLA HEADER BELOW BANNER ─── */
+.villa-header-wrap {
+  max-width: 1100px; margin: 0 auto;
+  padding: 24px 28px 0;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+}
+@media (max-width: 860px) { .villa-header-wrap { padding: 16px 16px 0; flex-direction: column; gap: 8px; } }
+
+/* ─── 2 COLUMN LAYOUT ─── */
+.page-layout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  max-width: 1100px; margin: 0 auto; padding: 20px 28px 100px; align-items: start;
+}
+@media (max-width: 860px) {
+  .page-layout { grid-template-columns: 1fr; padding: 16px 16px 100px; }
+  .col-left, .col-right { width: 100%; min-width: 0; max-width: 100%; overflow-x: hidden; }
+
+}
+
+/* ─── AMENITY CATEGORIES ─── */
+.amen-section { margin-bottom: 22px; }
+.amen-cat-title {
+  font-size: 13px; font-weight: 700; color: #374151;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 7px;
+  padding-bottom: 8px; border-bottom: 1.5px solid #f0f5fb;
+}
+.amen-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 8px 4px;
+}
+@media (max-width: 500px) { .amen-grid { grid-template-columns: repeat(2,1fr); } }
+.amen-item {
+  display: flex; align-items: flex-start; gap: 7px;
+  font-size: 13px; color: #111827; line-height: 1.4; padding: 3px 0;
+}
+.amen-item.unavailable { color: #c4c4c4; }
+.amen-check {
+  width: 17px; height: 17px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; margin-top: 1px;
+  background: #22c55e; color: white;
+}
+.amen-item.unavailable .amen-check {
+  background: #e5e7eb; color: #c4c4c4;
+}
+/* ─── STATS BAR ─── */
+.stats-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1.5px solid #e5e7eb; border-radius: 14px; overflow: hidden;
+}
+.stat-item {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 18px 8px; gap: 6px; border-right: 1.5px solid #e5e7eb;
+}
+.stat-item:last-child { border-right: none; }
+.stat-icon { color: #6b7280; }
+.stat-num { font-size: 18px; font-weight: 800; color: #111827; }
+.stat-label { font-size: 11px; color: #9ca3af; font-weight: 500; }
+@media (max-width: 500px) {
+  .stats-bar { grid-template-columns: repeat(2,1fr); }
+  .stat-item:nth-child(2) { border-right: none; }
+  .stat-item:nth-child(1),.stat-item:nth-child(2) { border-bottom: 1.5px solid #e5e7eb; }
+}
+</style>
+</head>
+<body>
+
+<div id="backBar">
+  <a class="back-btn" href="index.html">
+    <span class="back-btn-text">กลับหน้าหลัก</span>
+    <span class="back-btn-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/>
+        <path d="M9 21V12h6v9"/>
+      </svg>
+    </span>
+  </a>
+  <span class="back-title">VILLA 8</span>
+  <span class="back-sub">· VILLA 8</span>
+  <a href="https://www.facebook.com/groups/poolvilla.bangsaen.beach" target="_blank" rel="noopener"
+    style="margin-left:auto;display:flex;align-items:center;gap:7px;background:#1877f2;border-radius:20px;padding:6px 10px 6px 8px;text-decoration:none;flex-shrink:0;">
+    <div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.884v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+    </div>
+    <div style="display:flex;flex-direction:column;line-height:1.25;min-width:0;">
+      <span style="font-family:'Kanit',sans-serif;font-size:11px;font-weight:700;color:white;white-space:nowrap;">รวมพูลวิลล่าบางแสน มินิมอล</span>
+      <span style="font-family:'Kanit',sans-serif;font-size:9px;color:rgba(255,255,255,0.85);display:flex;align-items:center;gap:3px;">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        กลุ่มสาธารณะ · สมาชิก 2,000 คน
+      </span>
+    </div>
+  </a>
+</div>
+
+<!-- ── BANNER ── -->
+<div id="villaBanner">
+  <div class="vb-main" onclick="openFs(0)">
+    <img id="vbMain" src="" alt="main" onerror="this.src='https://placehold.co/800x480/e8f4f8/aaa?text=Photo'">
+  </div>
+  <div class="vb-thumb" onclick="openFs(1)">
+    <img id="vbThumb1" src="" alt="" onerror="this.src='https://placehold.co/400x240/e8f4f8/aaa?text=Photo'">
+  </div>
+  <div class="vb-thumb" style="position:relative;" onclick="openGallery()">
+    <img id="vbThumb2" src="" alt="" onerror="this.src='https://placehold.co/400x240/e8f4f8/aaa?text=Photo'">
+    <div class="vb-count-overlay" id="vbCountOverlay"></div>
+  </div>
+</div>
+
+<!-- ── VILLA HEADER ── -->
+<div class="villa-header-wrap">
+  <div>
+    <div class="villa-badge" style="margin-bottom:6px;">🏡 หลังที่ 8</div>
+    <div class="villa-name" style="font-size:26px;">VILLA 8</div>
+    <div class="villa-sub">บ้านพักบางแสน · เร็วๆ นี้</div>
+  </div>
+</div>
+
+<div class="page-layout">
+  <!-- LEFT COL: ข้อมูลบ้าน -->
+  <div class="col-left">
+    <div class="main-wrap">
+      <div class="price-section">
+        <div class="price-section-title">💰 ราคาที่พัก (ต่อคืน)</div>
+        <table class="price-table">
+          <tr><td>–</td><td>–</td></tr>
+        </table>
+        <div class="price-note">⏰ Check-in 14:00 น. &nbsp;|&nbsp; Check-out ก่อน 11:00 น.</div>
+      </div>
+
+      <div class="sec-block">
+        <div class="stats-bar">
+          <div class="stat-item">
+            <svg width="38" height="38" viewBox="0 0 64 64" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 44V32a4 4 0 014-4h44a4 4 0 014 4v12"/>
+  <path d="M4 44h56"/>
+  <path d="M6 50v4M58 50v4"/>
+  <rect x="12" y="20" width="16" height="8" rx="2"/>
+  <rect x="36" y="20" width="16" height="8" rx="2"/>
+  <path d="M6 28V22a2 2 0 012-2"/>
+  <path d="M58 28V22a2 2 0 00-2-2"/>
+</svg>
+            <span class="stat-num">-</span>
+            <span class="stat-label">ห้องนอน</span>
+          </div>
+          <div class="stat-item">
+            <svg width="38" height="38" viewBox="0 0 64 64" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 36h48v6a12 12 0 01-12 12H20A12 12 0 018 42v-6z"/>
+  <path d="M18 36V20a6 6 0 016-6h2a5 5 0 015 5v1"/>
+  <line x1="10" y1="36" x2="54" y2="36"/>
+  <path d="M22 54l-3 6M42 54l3 6"/>
+  <circle cx="28" cy="18" r="1.5" fill="#4b5563"/>
+</svg>
+            <span class="stat-num">-</span>
+            <span class="stat-label">ห้องน้ำ</span>
+          </div>
+          <div class="stat-item">
+            <svg width="38" height="38" viewBox="0 0 64 64" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="32" cy="16" r="8"/>
+  <path d="M14 52v-3a18 18 0 0136 0v3"/>
+  <circle cx="12" cy="22" r="6"/>
+  <path d="M2 50v-2a13 13 0 0118-12"/>
+  <circle cx="52" cy="22" r="6"/>
+  <path d="M62 50v-2a13 13 0 00-18-12"/>
+</svg>
+            <span class="stat-num">-</span>
+            <span class="stat-label">คน</span>
+          </div>
+          <div class="stat-item">
+            <svg width="38" height="38" viewBox="0 0 64 64" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 30L32 12l26 18"/>
+  <path d="M10 30v22h44V30"/>
+  <rect x="20" y="36" width="24" height="16" rx="1"/>
+  <line x1="20" y1="44" x2="44" y2="44"/>
+  <line x1="32" y1="36" x2="32" y2="52"/>
+</svg>
+            <span class="stat-num">-</span>
+            <span class="stat-label">ที่จอดรถ</span>
+          </div>
+        </div>
+        <div class="note-box" style="margin-top:12px;">🔧 อยู่ระหว่างการเตรียมความพร้อม</div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title">🏠 สิ่งอำนวยความสะดวก</div>
+        <div id="amenitiesWrap"></div>
+      </div>
+
+      <div class="sec-block">
+        <div class="sec-title">📍 ที่ตั้ง</div>
+        <div class="location-box">
+          <strong>🏖️ ห่างหาดบางแสน 3.6 กม.</strong> · ขับรถ 8–10 นาที<br>
+          บ้านอยู่ห่างจากถนนสุขุมวิท 200 เมตร<br>
+          ซอยห้วยกะปิ 18 ก่อนถึงแยกบางแสน
+        </div>
+        <div style="margin-top:10px;">
+          <a class="btn-map" href="https://maps.app.goo.gl/gqs2Ytue3WEcJpDs7" target="_blank" style="display:inline-flex;">📍 เปิด Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT COL: ราคา + ปฏิทิน + ติดต่อ -->
+  <div class="col-right">
+    <!-- Photo Slider (hidden — replaced by banner) -->
+    <div id="photoSlider" style="display:none;">
+      <div id="sliderTrack"></div>
+      <button class="ps-btn prev" onclick="psMove(-1)">&#8592;</button>
+      <button class="ps-btn next" onclick="psMove(1)">&#8594;</button>
+      <div class="ps-dots" id="psDots"></div>
+      <div class="ps-count" id="psCount"></div>
+    </div>
+
+    <div style="margin-top:0;">
+      <!-- Photo grid hidden (in gallery modal) -->
+      <div id="photoTabBar" style="display:none;"></div>
+      <div id="photoGrid" style="display:none;"></div>
+
+      <div class="sec-title" style="margin-top:0;margin-bottom:12px;">📅 ตรวจสอบวันว่าง</div>
+      <div class="cal-wrap">
+        <div class="cal-topbar">
+          <button class="cal-arr" id="calPrev">◀</button>
+          <span class="cal-month" id="calTitle">–</span>
+          <button class="cal-arr" id="calNext">▶</button>
+        </div>
+        <div class="cal-inner">
+          <div class="cal-hrow" id="calHead"></div>
+          <div class="cal-brow" id="calBody"></div>
+        </div>
+        <div class="cal-legend">
+          <div class="lg-item"><div class="lg-dot" style="background:#7de8c8;"></div>ว่าง</div>
+          <div class="lg-item"><div class="lg-dot" style="background:#ff8b94;"></div>จองแล้ว</div>
+          <div class="lg-item"><div class="lg-dot" style="background:#ffd3b6;"></div>รอโอน</div>
+          <div class="lg-item"><div class="lg-dot" style="background:#ffeb3b;border:1px solid #ddd;"></div>วันหยุด</div>
+          <div class="lg-item"><div class="lg-dot" style="background:#ff9800;"></div>ปิดปรับปรุง</div>
+        </div>
+      </div>
+
+      <div class="contact-box" style="margin-top:16px;">
+        <h3>📞 สอบถาม / จองบ้านพัก</h3>
+        <p>ตอบทุกวัน 08:00 – 22:00 น. · วิดีโอคอลก่อนจองได้เลยค่ะ</p>
+        <div class="contact-btns">
+          <a class="ct-btn ct-btn-fb" href="https://www.facebook.com/share/1DmXdsiXsk/?mibextid=wwXIfr" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.884v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+            Inbox Facebook</a>
+          <a class="ct-btn ct-btn-line" href="https://lin.ee/ZGmYppp" target="_blank">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+            LINE: @athomebs</a>
+          <a class="ct-btn ct-btn-phone" href="tel:0652926351">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.26.2 2.47.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+            065-292-6351</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><strong>AT HOME POOL VILLA</strong> · บางแสน ชลบุรี · 📞 065-292-6351</footer>
+
+<!-- Gallery Modal -->
+<div id="galleryModal" onclick="if(event.target===this)closeGallery()">
+  <div class="gal-box">
+    <button class="gal-close" onclick="closeGallery()">✕</button>
+
+    <!-- Sidebar -->
+    <div class="gal-sidebar">
+      <div class="gal-sidebar-title">แกลเลอรี</div>
+      <div id="galCatList"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="gal-content">
+      <div class="gal-content-inner" id="galContentInner"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox (ดูรูปเต็มจอ) -->
+<div id="galLightbox" onclick="if(event.target===this)closeLightbox()">
+  <button id="galLbClose" onclick="closeLightbox()">✕</button>
+  <button class="gal-lb-nav" id="galLbPrev" onclick="event.stopPropagation();lbMove(-1)">&#8592;</button>
+  <img id="galLbImg" src="" alt="" onclick="event.stopPropagation()">
+  <button class="gal-lb-nav" id="galLbNext" onclick="event.stopPropagation();lbMove(1)">&#8594;</button>
+  <div id="galLbCounter"></div>
+</div>
+
+<!-- Day Popup -->
+<div id="dayPopup">
+  <div class="dp-status" id="dpStatus"></div>
+  <div id="dpBasePrice" style="font-size:13px;color:#555;margin-bottom:6px;"></div>
+  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+    <span style="font-size:11px;color:#888;white-space:nowrap;">คนเสริม</span>
+    <button onclick="changeGuest(-1)" style="width:22px;height:22px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>
+    <span id="dpGuestCount" style="min-width:20px;text-align:center;font-weight:700;font-size:14px;">0</span>
+    <button onclick="changeGuest(1)" style="width:22px;height:22px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>
+    <span style="font-size:10px;color:#aaa;">(+500/คน)</span>
+  </div>
+  <div style="border-top:1px solid #eee;padding-top:6px;">
+    <div style="font-size:10px;color:#aaa;margin-bottom:2px;">ราคารวม</div>
+    <div id="dpTotal" style="font-size:20px;font-weight:800;color:#00b89c;"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyBMIMAgZFP9fIYldWSavIyAU4VIU7TmuOE",
+  authDomain:"at-home-pool-villa.firebaseapp.com",
+  projectId:"at-home-pool-villa",
+  storageBucket:"at-home-pool-villa.firebasestorage.app",
+  messagingSenderId:"600118485914",
+  appId:"1:600118485914:web:6e9b1097e456bc9a625023"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+const VILLA_ID   = 8;
+const PRICE_BASE = 6900;
+const DAY_LABELS = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+const MONTH_NAMES_TH = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const STATUS_LABEL = {available:'ว่าง',pending:'รอโอน',booked:'จองแล้ว',holiday:'วันหยุดนักขัตฤกษ์',maintenance:'ปิดปรับปรุง'};
+const STATUS_COLOR = {available:'#00a07a',pending:'#d4720a',booked:'#e03a4a',holiday:'#b89200',maintenance:'#d4720a'};
+
+const DEFAULT_PHOTOS = [
+  'photo/หลัง8/1.jpg','photo/หลัง8/2.jpg','photo/หลัง8/3.jpg',
+  'photo/หลัง8/4.jpg','photo/หลัง8/5.jpg','photo/หลัง8/6.jpg','photo/หลัง8/7.jpg','photo/หลัง8/8.jpg','photo/หลัง8/9.jpg'
+];
+
+// ═══ PHOTO CATEGORY CONFIG ═══
+const PHOTO_CATS = {
+  cover:    { label:'รูปปก',         icon:'🏠' },
+  pool:     { label:'สระน้ำ',        icon:'🏊' },
+  living:   { label:'ห้องนั่งเล่น',  icon:'🛋️' },
+  bedroom:  { label:'ห้องนอน',       icon:'🛏️' },
+  bathroom: { label:'ห้องน้ำ',       icon:'🚿' },
+  kitchen:  { label:'ห้องครัว',      icon:'🍳' },
+  other:    { label:'อื่นๆ',         icon:'📷' },
+};
+
+let photos       = [...DEFAULT_PHOTOS];
+let bookings     = {};
+let photoCatData = {};   // { "1": "cover", "2": "pool", ... }
+let activeCat    = 'all';
+let calYear, calMonth, psIdx = 0;
+
+// ─── Firebase realtime listener ───
+const now = new Date();
+calYear  = now.getFullYear();
+calMonth = now.getMonth() + 1;
+
+onSnapshot(doc(db, 'villas', String(VILLA_ID)), snap => {
+  if (snap.exists()) {
+    const d = snap.data();
+    bookings     = d.bookings     || {};
+    photoCatData = d.photoCategories || {};
+    const hidden = new Set(d.hiddenPhotos || []);
+    const basePhotos = DEFAULT_PHOTOS.filter((_, i) => !hidden.has(i+1));
+    if (d.photos && d.photos.length) photos = [...basePhotos, ...d.photos];
+    else photos = [...basePhotos];
+  } else {
+    bookings = {}; photoCatData = {}; photos = [...DEFAULT_PHOTOS];
+  }
+  buildBanner();
+  buildSlider();
+  buildTabBar();
+  renderPhotoGrid(activeCat);
+  renderCal();
+  renderAmenities(VILLA1_AMENITIES);
+});
+
+// ─── Slider ───
+function buildBanner() {
+  if (!photos.length) return;
+  const main = document.getElementById('vbMain');
+  const t1   = document.getElementById('vbThumb1');
+  const t2   = document.getElementById('vbThumb2');
+  const ov   = document.getElementById('vbCountOverlay');
+  if (main) main.src = photos[0] || '';
+  if (t1)   t1.src   = photos[1] || photos[0] || '';
+  if (t2)   t2.src   = photos[2] || photos[0] || '';
+  if (ov)   ov.textContent = photos.length > 3 ? `+${photos.length - 2}` : '';
+  // click on vb-main goes to gallery with idx 0
+  const vbMainWrap = document.querySelector('.vb-main');
+  if (vbMainWrap) vbMainWrap.onclick = () => openFs(0);
+  const vbThumb1Wrap = document.querySelector('.vb-thumb');
+  if (vbThumb1Wrap) vbThumb1Wrap.onclick = () => openFs(1);
+}
+
+function buildSlider() {
+  const track = document.getElementById('sliderTrack');
+  const dots  = document.getElementById('psDots');
+  if (track) { track.innerHTML = ''; }
+  if (dots)  { dots.innerHTML  = ''; }
+  photos.forEach((src, i) => {
+    if (!track) return;
+    const s = document.createElement('div');
+    s.className = 'ps-slide';
+    s.innerHTML = `<img src="${src}" alt="" onerror="this.src='https://placehold.co/720x340/e8f4f8/aaa?text=Photo'" onclick="openFs(${i})">`;
+    track.appendChild(s);
+    if (dots) {
+      const d = document.createElement('button');
+      d.className = 'ps-dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => psGoTo(i);
+      dots.appendChild(d);
+    }
+  });
+  psGoTo(0);
+  const multi = photos.length > 1;
+  document.querySelector('.ps-btn.prev').style.display = multi ? '' : 'none';
+  document.querySelector('.ps-btn.next').style.display = multi ? '' : 'none';
+}
+
+window.psMove = function(dir) { psIdx = (psIdx + dir + photos.length) % photos.length; psGoTo(psIdx); };
+function psGoTo(idx) {
+  psIdx = idx;
+  document.getElementById('sliderTrack').style.transform = `translateX(-${idx * 100}%)`;
+  document.querySelectorAll('.ps-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  document.getElementById('psCount').textContent = `${idx + 1} / ${photos.length}`;
+}
+
+// ─── Photo Tab Bar ───
+function buildTabBar() {
+  const bar = document.getElementById('photoTabBar');
+  if (!bar) return;
+
+  // Count photos per category
+  const counts = {};
+  photos.forEach((_, i) => {
+    const cat = photoCatData[String(i + 1)] || '';
+    if (cat) counts[cat] = (counts[cat] || 0) + 1;
+  });
+
+  // Only show tabs that have photos assigned
+  let html = `<button class="ph-tab${activeCat === 'all' ? ' active' : ''}" onclick="switchPhotoCat('all',this)">ทั้งหมด <span class="ph-count">${photos.length}</span></button>`;
+
+  Object.entries(PHOTO_CATS).forEach(([k, v]) => {
+    const n = counts[k] || 0;
+    if (n === 0) return; // hide empty categories
+    html += `<button class="ph-tab${activeCat === k ? ' active' : ''}" onclick="switchPhotoCat('${k}',this)">${v.icon} ${v.label} <span class="ph-count">${n}</span></button>`;
+  });
+
+  bar.innerHTML = html;
+}
+
+// ─── Photo Grid ───
+function renderPhotoGrid(cat) {
+  const grid = document.getElementById('photoGrid');
+  if (!grid) return;
+
+  const filtered = [];
+  photos.forEach((src, i) => {
+    const c = photoCatData[String(i + 1)] || '';
+    if (cat === 'all' || c === cat) filtered.push({ src, idx: i });
+  });
+
+  if (!filtered.length) {
+    const catInfo = PHOTO_CATS[cat];
+    grid.innerHTML = `<div class="photo-empty"><div class="pe-icon">${catInfo ? catInfo.icon : '🖼️'}</div>ยังไม่มีรูปในหมวด${catInfo ? catInfo.label : 'นี้'}</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(item =>
+    `<div class="photo-grid-item" onclick="openFs(${item.idx})">
+      <img src="${item.src}" alt="รูป ${item.idx + 1}" loading="lazy"
+           onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo+${item.idx + 1}'">
+    </div>`
+  ).join('');
+}
+
+window.switchPhotoCat = function(cat, el) {
+  activeCat = cat;
+  document.querySelectorAll('#photoTabBar .ph-tab').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderPhotoGrid(cat);
+};
+
+// ─── Calendar ───
+function daysInMonth(y, m)   { return new Date(y, m, 0).getDate(); }
+function firstDayOfMonth(y, m){ return new Date(y, m - 1, 1).getDay(); }
+
+function renderCal() {
+  document.getElementById('calTitle').textContent = `${MONTH_NAMES_TH[calMonth - 1]} ${calYear}`;
+  document.getElementById('calHead').innerHTML = DAY_LABELS.map(d => `<div class="cal-hcell">${d}</div>`).join('');
+  const body  = document.getElementById('calBody');
+  const start = firstDayOfMonth(calYear, calMonth);
+  const total = daysInMonth(calYear, calMonth);
+  let cells = '';
+  for (let i = 0; i < start; i++) cells += `<div class="cal-day empty"></div>`;
+  for (let d = 1; d <= total; d++) {
+    const key    = `${calYear}-${calMonth}-${d}`;
+    const b      = bookings[key] || {};
+    const status = b.status || 'available';
+    const price  = b.price  || '';
+    const priceLabel = price ? `<span class="cal-price">฿${Number(price).toLocaleString()}</span>` : '';
+    const isBlocked  = (status === 'booked' || status === 'pending' || status === 'maintenance');
+    cells += `<div class="cal-day ${status} ${isBlocked ? 'blocked' : ''}" ${isBlocked ? '' : `onclick="event.stopPropagation();togglePopup(this,'${status}','${price}',${PRICE_BASE})"`}>${d}${priceLabel}</div>`;
+  }
+  body.innerHTML = cells;
+}
+
+document.getElementById('calPrev').onclick = () => { calMonth--; if (calMonth < 1) { calMonth = 12; calYear--; } renderCal(); };
+document.getElementById('calNext').onclick = () => { calMonth++; if (calMonth > 12) { calMonth = 1; calYear++; } renderCal(); };
+
+// ─── Day Popup ───
+let popupOpenDay = null, popupScrollHandler = null, dpCurrentBase = 0, dpGuestCount = 0;
+
+function positionPopup(el) {
+  const popup = document.getElementById('dayPopup');
+  const r = el.getBoundingClientRect();
+  const pw = popup.offsetWidth || 130, ph = popup.offsetHeight || 60;
+  let left = r.left, top = r.bottom + 8;
+  if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+  if (left < 8) left = 8;
+  if (top + ph > window.innerHeight - 8) top = r.top - ph - 8;
+  popup.style.left = left + 'px';
+  popup.style.top  = top + 'px';
+}
+
+window.togglePopup = function(el, status, price, priceBase) {
+  const popup = document.getElementById('dayPopup');
+  if (popupOpenDay === el) { closePopup(); return; }
+  popupOpenDay  = el;
+  dpGuestCount  = 0;
+  dpCurrentBase = price ? Number(price) : (priceBase ? Number(priceBase) : 0);
+  const s = document.getElementById('dpStatus');
+  s.textContent = STATUS_LABEL[status] || status;
+  s.style.color = STATUS_COLOR[status] || '#333';
+  document.getElementById('dpGuestCount').textContent = '0';
+  document.getElementById('dpBasePrice').innerHTML = dpCurrentBase
+    ? `ราคาห้อง: <b>${dpCurrentBase.toLocaleString()}</b> บาท`
+    : `<span style="color:#bbb">ไม่ระบุราคา</span>`;
+  updateDpTotal();
+  popup.style.animation = 'none';
+  popup.style.display   = 'block';
+  setTimeout(() => { positionPopup(el); popup.offsetHeight; popup.style.animation = 'popIn 0.15s ease'; }, 0);
+  if (popupScrollHandler) window.removeEventListener('scroll', popupScrollHandler, true);
+  popupScrollHandler = () => positionPopup(el);
+  window.addEventListener('scroll', popupScrollHandler, true);
+};
+
+window.changeGuest = function(dir) {
+  dpGuestCount = Math.max(0, dpGuestCount + dir);
+  document.getElementById('dpGuestCount').textContent = dpGuestCount;
+  updateDpTotal();
+};
+
+function updateDpTotal() {
+  const total = dpCurrentBase + (dpGuestCount * 500);
+  const el = document.getElementById('dpTotal');
+  el.innerHTML = dpCurrentBase
+    ? `${total.toLocaleString()} <span style="font-size:12px;font-weight:400;color:#888">บาท</span>`
+    : `<span style="font-size:13px;color:#bbb">-</span>`;
+}
+
+window.closePopup = function() {
+  document.getElementById('dayPopup').style.display = 'none';
+  popupOpenDay = null;
+  if (popupScrollHandler) { window.removeEventListener('scroll', popupScrollHandler, true); popupScrollHandler = null; }
+};
+document.addEventListener('click', function(e) {
+  const popup = document.getElementById('dayPopup');
+  if (popup.style.display === 'block' && !popup.contains(e.target)) closePopup();
+});
+
+// ─── Amenity Categories ───
+const AMENITY_CATS = [
+  {
+    id: 'pool',
+    label: '🏊 สระ & กิจกรรม',
+    items: [
+      { key: 'pool',       label: '🏊 สระว่ายน้ำขนาดใหญ่' },
+      { key: 'waterslide', label: '🛝 สไลเดอร์น้ำ' },
+      { key: 'pooltable',  label: '🎱 โต๊ะพูล' },
+      { key: 'karaoke',    label: '🎤 คาราโอเกะ (YouTube)' },
+      { key: 'parking',    label: '🚗 จอดรถในบ้าน' },
+    ]
+  },
+  {
+    id: 'room',
+    label: '🛏️ ห้องนอน & ห้องน้ำ',
+    items: [
+      { key: 'ac',         label: '❄️ แอร์ทุกห้อง' },
+      { key: 'hotwater',   label: '🚿 น้ำอุ่นทุกห้อง' },
+      { key: 'bathtub',    label: '🛁 อ่างอาบน้ำ' },
+      { key: 'towel',      label: '🧺 ผ้าเช็ดตัวตามจำนวนผู้เข้าพัก' },
+      { key: 'toiletries', label: '🧴 ฟรี สบู่ & แชมพู' },
+    ]
+  },
+  {
+    id: 'entertainment',
+    label: '📺 ความบันเทิง',
+    items: [
+      { key: 'smarttv',    label: '📺 Smart TV' },
+      { key: 'internet',   label: '📶 Wi-Fi ฟรี' },
+      { key: 'bbq',        label: '🔥 บาร์บีคิว / เตาถ่าน' },
+    ]
+  },
+  {
+    id: 'safety',
+    label: '🔒 ความปลอดภัย',
+    items: [
+      { key: 'cctv',       label: '📷 กล้องรักษาความปลอดภัย 24 ชม.' },
+    ]
+  },
+  {
+    id: 'food',
+    label: '🍽️ อาหาร & เครื่องดื่ม',
+    items: [
+      { key: 'water',      label: '💧 น้ำดื่ม 1 แพค/คืน' },
+      { key: 'coffee',     label: '☕ กาแฟซอง' },
+      { key: 'ice',        label: '🧊 ถังน้ำแข็ง' },
+    ]
+  },
+  {
+    id: 'kitchen',
+    label: '🍳 ครัว & เครื่องใช้',
+    items: [
+      { key: 'kettle',     label: '♨️ กาน้ำร้อน' },
+      { key: 'airfryer',   label: '🍟 หม้อทอดไร้น้ำมัน' },
+      { key: 'microwave',  label: '📡 ไมโครเวฟ' },
+      { key: 'ricecooker', label: '🍚 หม้อหุงข้าว' },
+      { key: 'gasgrill',   label: '🔥 เตาย่างแก๊ส' },
+      { key: 'charcoal',   label: '🪵 เตาถ่าน + ถ่าน' },
+      { key: 'toaster',    label: '🍞 เตาปิ้งขนมปัง' },
+      { key: 'stove',      label: '⚡ เตาไฟฟ้า' },
+      { key: 'pots',       label: '🥘 หม้อนึ่ง / กระทะ / หม้อต้ม' },
+      { key: 'dishes',     label: '🍽️ จาน ชาม ช้อนส้อม แก้ว' },
+      { key: 'dishsoap',   label: '🧼 น้ำยาล้างจาน + ฟองน้ำ' },
+      { key: 'mortar',     label: '🥣 ครก' },
+    ]
+  },
+];
+
+// ✅ = villa1 has it (all items above)
+const VILLA1_AMENITIES = {
+  pool:false, waterslide:false, pooltable:false, karaoke:false, parking:false,
+  ac:false, hotwater:false, bathtub:false, towel:false, toiletries:false,
+  smarttv:false, internet:false, bbq:false,
+  cctv:false,
+  water:false, coffee:false, ice:false,
+  kettle:false, airfryer:false, microwave:false, ricecooker:false,
+  gasgrill:false, charcoal:false, toaster:false, stove:false,
+  pots:false, dishes:false, dishsoap:false, mortar:false,
+};
+
+function renderAmenities(villaAmenities) {
+  const wrap = document.getElementById('amenitiesWrap');
+  if (!wrap) return;
+  let html = '';
+  AMENITY_CATS.forEach(cat => {
+    const items = cat.items.map(item => {
+      const has = !!villaAmenities[item.key];
+      // strip emoji from label for cleaner look
+      const label = item.label.replace(/^\S+\s/, '');
+      return `<div class="amen-item${has ? '' : ' unavailable'}">
+        <span class="amen-check">${has ? '✓' : '✕'}</span>
+        <span>${label}</span>
+      </div>`;
+    }).join('');
+    html += `<div class="amen-section">
+      <div class="amen-cat-title">${cat.label}</div>
+      <div class="amen-grid">${items}</div>
+    </div>`;
+  });
+  wrap.innerHTML = html;
+}
+
+// ─── Gallery Modal ───
+const GAL_CAT_ORDER = ['cover','pool','living','bedroom','bathroom','kitchen','other'];
+
+let galAllPhotos = []; // [{src, idx, cat}]
+let galActiveCat = 'all';
+
+function buildGalleryCatData() {
+  galAllPhotos = photos.map((src, i) => ({
+    src, idx: i,
+    cat: photoCatData[String(i + 1)] || ''
+  }));
+}
+
+window.openFs = function(startIdx) {
+  buildGalleryCatData();
+
+  // Determine which cat this photo belongs to, activate that cat if assigned
+  const item = galAllPhotos[startIdx];
+  galActiveCat = (item && item.cat) ? item.cat : 'all';
+
+  renderGalSidebar();
+  renderGalContent(galActiveCat);
+
+  document.getElementById('galleryModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  // Gallery opens first — user clicks image in gallery to zoom (no auto-lightbox)
+};
+
+window.openGallery = function() {
+  buildGalleryCatData();
+  galActiveCat = 'all';
+  renderGalSidebar();
+  renderGalContent('all');
+  document.getElementById('galleryModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeGallery = function() {
+  document.getElementById('galleryModal').classList.remove('show');
+  document.body.style.overflow = '';
+};
+
+function renderGalSidebar() {
+  const list = document.getElementById('galCatList');
+
+  // Count per category
+  const counts = {};
+  galAllPhotos.forEach(p => { if (p.cat) counts[p.cat] = (counts[p.cat] || 0) + 1; });
+
+  let html = `<button class="gal-cat-btn${galActiveCat==='all'?' active':''}" onclick="switchGalCat('all',this)">
+    <span>ทั้งหมด</span><span class="gal-cat-count">${galAllPhotos.length}</span>
+  </button>`;
+
+  GAL_CAT_ORDER.forEach(k => {
+    const v = PHOTO_CATS[k]; if (!v) return;
+    const n = counts[k] || 0; if (n === 0) return;
+    html += `<button class="gal-cat-btn${galActiveCat===k?' active':''}" onclick="switchGalCat('${k}',this)">
+      <span>${v.icon} ${v.label}</span><span class="gal-cat-count">${n}</span>
+    </button>`;
+  });
+
+  list.innerHTML = html;
+}
+
+function renderGalContent(cat) {
+  const inner = document.getElementById('galContentInner');
+  inner.innerHTML = '';
+
+  if (cat === 'all') {
+    // Render each category as a section
+    const counts = {};
+    galAllPhotos.forEach(p => { if (p.cat) counts[p.cat] = (counts[p.cat] || 0) + 1; });
+
+    // Cover / unassigned first if any
+    const unassigned = galAllPhotos.filter(p => !p.cat);
+
+    GAL_CAT_ORDER.forEach(k => {
+      const v = PHOTO_CATS[k]; if (!v) return;
+      const items = galAllPhotos.filter(p => p.cat === k);
+      if (!items.length) return;
+      inner.innerHTML += buildGalSection(v.icon + ' ' + v.label, items);
+    });
+
+    if (unassigned.length) {
+      inner.innerHTML += buildGalSection('📷 ทั้งหมด', unassigned);
+    }
+
+    // If nothing categorised, just show all
+    if (!inner.innerHTML) {
+      inner.innerHTML += buildGalSection('📷 รูปภาพทั้งหมด', galAllPhotos);
+    }
+
+  } else {
+    const v = PHOTO_CATS[cat];
+    const items = galAllPhotos.filter(p => p.cat === cat);
+    inner.innerHTML = buildGalSection(v ? v.icon + ' ' + v.label : cat, items);
+  }
+}
+
+function buildGalSection(title, items) {
+  if (!items.length) return '';
+  const single = items.length === 1;
+  const imgs = items.map(item =>
+    `<div class="gal-img-wrap" onclick="openLightboxFromGlobal(${item.idx})">
+      <img src="${item.src}" alt="" loading="lazy"
+           onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
+    </div>`
+  ).join('');
+  return `<div class="gal-section-title">${title} <span class="gal-section-count">${items.length} รูป</span></div>
+<div class="gal-divider"></div>
+<div class="gal-grid${single?' single':''}" style="margin-bottom:28px;">${imgs}</div>`;
+}
+
+window.switchGalCat = function(cat, el) {
+  galActiveCat = cat;
+  document.querySelectorAll('.gal-cat-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderGalContent(cat);
+  document.getElementById('galContentInner').scrollTop = 0;
+};
+
+// ─── Lightbox ───
+let lbPhotos = [], lbIdx = 0;
+
+window.openLightboxFromGlobal = function(globalIdx) {
+  // Build lightbox array from current gallery view
+  const cat = galActiveCat;
+  lbPhotos = cat === 'all' ? galAllPhotos : galAllPhotos.filter(p => p.cat === cat);
+  lbIdx = lbPhotos.findIndex(p => p.idx === globalIdx);
+  if (lbIdx < 0) { lbPhotos = galAllPhotos; lbIdx = globalIdx; }
+  renderLb();
+  document.getElementById('galLightbox').classList.add('show');
+};
+
+function renderLb() {
+  document.getElementById('galLbImg').src = lbPhotos[lbIdx].src;
+  document.getElementById('galLbCounter').textContent = `${lbIdx + 1} / ${lbPhotos.length}`;
+  const multi = lbPhotos.length > 1;
+  document.getElementById('galLbPrev').style.display = multi ? '' : 'none';
+  document.getElementById('galLbNext').style.display = multi ? '' : 'none';
+}
+
+window.lbMove = function(dir) {
+  lbIdx = (lbIdx + dir + lbPhotos.length) % lbPhotos.length;
+  renderLb();
+};
+
+window.closeLightbox = function() {
+  document.getElementById('galLightbox').classList.remove('show');
+};
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('galLightbox').classList.contains('show')) {
+    if (e.key === 'ArrowLeft')  lbMove(-1);
+    if (e.key === 'ArrowRight') lbMove(1);
+    if (e.key === 'Escape')     closeLightbox();
+  } else if (document.getElementById('galleryModal').classList.contains('show')) {
+    if (e.key === 'Escape') closeGallery();
+  }
+});
+
+// Initial render before Firebase loads
+buildSlider();
+buildTabBar();
+renderPhotoGrid('all');
+renderCal();
+</script>
+
+<!-- FLOATING CONTACT -->
+<div id="floatBackdrop" onclick="closeFloat()"></div>
+<div id="floatBtn">
+  <div class="float-items">
+    <div class="float-item">
+      <div class="float-item-label">LINE: @athomebs</div>
+      <a class="float-item-btn line" href="https://lin.ee/ZGmYppp" target="_blank">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+      </a>
+    </div>
+    <div class="float-item">
+      <div class="float-item-label">Inbox Facebook</div>
+      <a class="float-item-btn messenger" href="https://www.facebook.com/share/1DmXdsiXsk/?mibextid=wwXIfr" target="_blank">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.914 1.408 5.516 3.618 7.24V22l3.305-1.814A11.2 11.2 0 0012 20.486c5.523 0 10-4.144 10-9.243C22 6.145 17.523 2 12 2z"/></svg>
+      </a>
+    </div>
+    <div class="float-item">
+      <div class="float-item-label">065-292-6351</div>
+      <a class="float-item-btn phone" href="tel:0652926351">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.26.2 2.47.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+      </a>
+    </div>
+  </div>
+  <button class="float-main" onclick="toggleFloat()" id="floatMainBtn">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+    </svg>
+  </button>
+  <div class="float-label">ติดต่อจองบ้านพัก</div>
+</div>
+
+<script>
+function toggleFloat(){
+  const btn=document.getElementById('floatBtn'),backdrop=document.getElementById('floatBackdrop'),mainBtn=document.getElementById('floatMainBtn');
+  const isOpen=btn.classList.contains('expanded');
+  if(isOpen){closeFloat();}else{btn.classList.add('expanded');mainBtn.classList.add('open');backdrop.classList.add('show');}
+}
+function closeFloat(){
+  document.getElementById('floatBtn').classList.remove('expanded');
+  document.getElementById('floatMainBtn').classList.remove('open');
+  document.getElementById('floatBackdrop').classList.remove('show');
+}
+</script>
+</body>
+</html>
