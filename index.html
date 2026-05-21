@@ -437,6 +437,91 @@ footer strong { color: white; }
 /* ─── FACEBOOK SECTION ─── */
 #section-facebook { background: #f8f9fa; padding: 40px 20px 0; }
 .fb-card { max-width: 680px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.10); border: 1px solid #e8e8e8; }
+
+/* ─── FILTER CHIPS ─── */
+#filterBar {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 16px 28px 8px; max-width: 1000px; margin: 0 auto;
+}
+@media (max-width: 900px) { #filterBar { padding: 12px 16px 4px; } }
+@media (max-width: 560px) { #filterBar { padding: 10px 10px 4px; gap: 6px; } }
+
+.filter-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 30px;
+  border: 1.5px solid #d1d5db; background: white;
+  font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 400;
+  color: #374151; cursor: pointer; transition: all 0.15s;
+  white-space: nowrap; user-select: none;
+}
+.filter-chip:hover { border-color: #0077b6; color: #0077b6; background: #f0f9ff; }
+.filter-chip.active {
+  background: #0077b6; border-color: #0077b6;
+  color: white; font-weight: 600;
+}
+.filter-chip .chip-icon { font-size: 15px; }
+
+/* ─── SIDEBAR FILTER LAYOUT ─── */
+#villaSection {
+  display: flex; gap: 24px; max-width: 1200px;
+  margin: 0 auto; padding: 16px 28px 40px; align-items: flex-start;
+}
+@media (max-width: 900px) { #villaSection { padding: 12px 16px 32px; gap: 16px; } }
+@media (max-width: 700px) { #villaSection { flex-direction: column; } }
+
+/* Sidebar */
+#filterSidebar {
+  width: 240px; min-width: 240px; flex-shrink: 0;
+  background: white; border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 18px; position: sticky; top: 70px;
+}
+@media (max-width: 700px) {
+  #filterSidebar { width: 100%; min-width: unset; position: static; }
+}
+
+.fsb-title {
+  font-size: 13px; font-weight: 800; color: #111;
+  margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1.5px solid #f3f4f6;
+  display: flex; align-items: center; gap: 6px;
+}
+.fsb-section-title {
+  font-size: 11px; font-weight: 700; color: #6b7280;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin: 14px 0 8px;
+}
+.fsb-check {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 6px; border-radius: 8px; cursor: pointer;
+  transition: background 0.12s; font-size: 13px; color: #374151;
+  user-select: none;
+}
+.fsb-check:hover { background: #f9fafb; }
+.fsb-check input[type=checkbox] {
+  width: 16px; height: 16px; accent-color: #0077b6;
+  cursor: pointer; flex-shrink: 0;
+}
+.fsb-check.active { color: #0077b6; font-weight: 600; }
+.fsb-count {
+  margin-left: auto; font-size: 11px; color: #9ca3af;
+  background: #f3f4f6; border-radius: 10px; padding: 1px 7px;
+}
+.fsb-clear {
+  width: 100%; margin-top: 14px; padding: 8px;
+  border-radius: 8px; border: 1.5px solid #e5e7eb;
+  background: white; color: #6b7280; font-size: 12px;
+  font-family: 'Kanit', sans-serif; cursor: pointer;
+  transition: all 0.15s;
+}
+.fsb-clear:hover { border-color: #ef4444; color: #ef4444; }
+
+/* Villa list area */
+#villaMain { flex: 1; min-width: 0; }
+#villaResultCount {
+  font-size: 13px; color: #6b7280; margin-bottom: 12px;
+  font-weight: 600;
+}
 </style>
 </head>
 <body>
@@ -573,9 +658,37 @@ footer strong { color: white; }
   </div>
 
   <div id="searchBannerWrap"></div>
-  <div id="villaGrid"></div>
-  <div style="text-align:center;padding:28px 0 0;">
-    <button id="showAllBtn" onclick="toggleShowAll()" style="display:inline-flex;align-items:center;gap:8px;padding:12px 32px;border-radius:30px;background:white;border:2px solid #0077b6;color:#0077b6;font-family:'Kanit',sans-serif;font-size:14px;font-weight:400;cursor:pointer;transition:all 0.2s;">ดูบ้านพักทั้งหมด 10 หลัง</button>
+
+  <div id="villaSection">
+    <!-- Sidebar Filter -->
+    <div id="filterSidebar">
+      <div class="fsb-title">🔍 ค้นหาที่พัก</div>
+
+      <div class="fsb-section-title">สิ่งอำนวยความสะดวก</div>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="pool"> 🏊 สระว่ายน้ำ <span class="fsb-count" id="fc-pool"></span></label>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="slide"> 🛝 สไลเดอร์ <span class="fsb-count" id="fc-slide"></span></label>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="karaoke"> 🎤 คาราโอเกะ <span class="fsb-count" id="fc-karaoke"></span></label>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="pooltable"> 🎱 โต๊ะพูล <span class="fsb-count" id="fc-pooltable"></span></label>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="bathtub"> 🛁 อ่างอาบน้ำ <span class="fsb-count" id="fc-bathtub"></span></label>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="cctv"> 📷 กล้องวงจรปิด 24 ชม. <span class="fsb-count" id="fc-cctv"></span></label>
+
+      <div class="fsb-section-title">จำนวนผู้เข้าพัก</div>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="8plus"> 👥 8+ ท่าน <span class="fsb-count" id="fc-8plus"></span></label>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="10plus"> 👥 10+ ท่าน <span class="fsb-count" id="fc-10plus"></span></label>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="15plus"> 👥 15+ ท่าน <span class="fsb-count" id="fc-15plus"></span></label>
+
+      <div class="fsb-section-title">ประเภท</div>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="available"> ✅ พร้อมจอง <span class="fsb-count" id="fc-available"></span></label>
+      <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="coming"> 🔜 เร็วๆ นี้ <span class="fsb-count" id="fc-coming"></span></label>
+
+      <button class="fsb-clear" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
+    </div>
+
+    <!-- Villa list -->
+    <div id="villaMain">
+      <div id="villaResultCount"></div>
+      <div id="villaGrid"></div>
+    </div>
   </div>
 </section>
 
@@ -857,7 +970,66 @@ function buildThumb(villa){
   return card;
 }
 
+// ─── Sidebar Filter ───
+const FILTER_FNS = {
+  pool:      v => !v.comingSoon && (v.features||[]).some(f=>f.includes('สระ')),
+  slide:     v => !v.comingSoon && (v.features||[]).some(f=>f.includes('สไลเดอร์')),
+  karaoke:   v => !v.comingSoon && (v.features||[]).some(f=>f.includes('คาราโอเกะ')),
+  pooltable: v => !v.comingSoon && (v.features||[]).some(f=>f.includes('โต๊ะพูล')),
+  bathtub:   v => !v.comingSoon && (v.features||[]).some(f=>f.includes('อ่าง')),
+  cctv:      v => !v.comingSoon && (v.features||[]).some(f=>f.includes('กล้อง')),
+  '8plus':   v => !v.comingSoon && parseInt((v.capacity||'0')) >= 8,
+  '10plus':  v => !v.comingSoon && parseInt((v.capacity||'0')) >= 10,
+  '15plus':  v => !v.comingSoon && parseInt((v.capacity||'0')) >= 15,
+  available: v => !v.comingSoon,
+  coming:    v => !!v.comingSoon,
+};
+
+function getActiveFilters() {
+  return [...document.querySelectorAll('#filterSidebar input[type=checkbox]:checked')]
+    .map(el => el.dataset.filter);
+}
+
+function matchesFilters(villa, filters) {
+  if (!filters.length) return true;
+  return filters.every(key => (FILTER_FNS[key]||(() => true))(villa));
+}
+
+window.applyFilters = function() {
+  renderVillas();
+  updateFilterCounts();
+};
+
+window.clearFilters = function() {
+  document.querySelectorAll('#filterSidebar input[type=checkbox]').forEach(el => el.checked = false);
+  renderVillas();
+  updateFilterCounts();
+};
+
+function updateFilterCounts() {
+  Object.keys(FILTER_FNS).forEach(key => {
+    const el = document.getElementById('fc-' + key);
+    if (el) el.textContent = villas.filter(v => FILTER_FNS[key](v)).length || '';
+  });
+}
+
+// Patch renderVillas to use sidebar filters
+window.renderVillas = renderVillas = function() {
+  const grid = document.getElementById('villaGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const active = getActiveFilters();
+  const filtered = villas.filter(v => matchesFilters(v, active));
+  filtered.forEach(v => grid.appendChild(buildThumb(v)));
+  const cnt = document.getElementById('villaResultCount');
+  if (cnt) cnt.textContent = filtered.length
+    ? `พบ ${filtered.length} หลัง${active.length ? ' (กรองแล้ว)' : ''}`
+    : '';
+  if(window._searchState && window.applyHighlightOnly) window.applyHighlightOnly();
+};
+
 renderVillas();
+updateFilterCounts();
 loadFirebase();
 
 window._showAll = false;
