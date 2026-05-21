@@ -938,6 +938,8 @@ const PHOTO_BASE = {
   7:'photo/หลัง7/',8:'photo/หลัง8/',9:'photo/หลัง9/',10:'photo/หลัง10/'
 };
 const PHOTO_COUNT = {1:9,2:9,3:9,4:10,5:10,6:10,7:10,8:10,9:10,10:10};
+window.PHOTO_BASE  = PHOTO_BASE;
+window.PHOTO_COUNT = PHOTO_COUNT;
 
 window.photoVilla = 1;
 let photoCategories = {};
@@ -1094,8 +1096,8 @@ async function _loadUploadedPhotos() {
   try {
     const snap = await getDoc(doc(db, 'villas', String(window.photoVilla)));
     const data = snap.exists() ? snap.data() : {};
-    const base   = PHOTO_BASE[window.photoVilla] || '';
-    const count  = PHOTO_COUNT[window.photoVilla] || 0;
+    const base   = (window.PHOTO_BASE || PHOTO_BASE)[window.photoVilla] || '';
+    const count  = (window.PHOTO_COUNT || PHOTO_COUNT)[window.photoVilla] || 0;
     const hidden = new Set(data.hiddenPhotos || []);
     // รูปเก่า — ใน edit mode แสดงทั้งหมด (รวมที่ซ่อน), ปกติแสดงแค่ที่ไม่ซ่อน
     const staticPhotos = Array.from({length: count}, (_, i) => ({
@@ -1313,7 +1315,7 @@ async function _uploadPreviewItem(item) {
 
         // Also save category (index = total static + dynamic count)
         const cats = existing.photoCategories || {};
-        const staticCount = PHOTO_COUNT[window.photoVilla] || 0;
+        const staticCount = (window.PHOTO_COUNT || PHOTO_COUNT)[window.photoVilla] || 0;
         if (item.cat) cats[String(staticCount + photos.length)] = item.cat;
 
         await setDoc(docRef, {...existing, photos, photoCategories: cats});
