@@ -961,7 +961,7 @@ window.selectPhotoVilla = async function(id, el){
   window.photoVilla = id;
   document.querySelectorAll('#photoVillaSel .vs-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('uploadQueue').innerHTML = '';
+  const pq = document.getElementById('previewQueue'); if(pq) pq.innerHTML = ''; previewFiles = [];
   await _loadPhotoCats();
   await _loadUploadedPhotos();
   _renderPhotoGrid();
