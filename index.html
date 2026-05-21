@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AT HOME POOL VILLA – บ้านพักบางแสน</title>
+<title>POOL VILLA BANGSAEN – บ้านพักบางแสน</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Mitr:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -478,6 +478,8 @@ footer strong { color: white; }
 }
 @media (max-width: 700px) {
   #filterSidebar { width: 100%; min-width: unset; position: static; }
+  #filterSidebarBody { display: none; }
+  #filterSidebar.open #filterSidebarBody { display: block; }
 }
 
 .fsb-title {
@@ -537,7 +539,7 @@ footer strong { color: white; }
     <span></span><span></span><span></span>
   </button>
   <div class="nav-logo-wrap">
-    <div class="nav-brand">RUAM POOL VILLA<small>Bangsaen</small></div>
+    <div class="nav-brand">POOL VILLA BANGSAEN<small>AT THE BEACH</small></div>
   </div>
   <a href="https://www.facebook.com/groups/poolvilla.bangsaen.beach" target="_blank" rel="noopener"
     style="margin-left:auto;display:flex;align-items:center;gap:7px;background:#1877f2;border-radius:20px;padding:6px 10px 6px 8px;text-decoration:none;flex-shrink:0;max-width:calc(100vw - 220px);">
@@ -662,7 +664,11 @@ footer strong { color: white; }
   <div id="villaSection">
     <!-- Sidebar Filter -->
     <div id="filterSidebar">
-      <div class="fsb-title">🔍 ค้นหาที่พัก</div>
+      <div class="fsb-title" id="filterToggle" onclick="toggleFilterSidebar()" style="cursor:pointer;">
+        🔍 ตัวกรอง
+        <span id="filterToggleIcon" style="margin-left:auto;font-size:12px;display:none;">▼</span>
+      </div>
+      <div id="filterSidebarBody">
 
       <div class="fsb-section-title">สิ่งอำนวยความสะดวก</div>
       <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="pool"> 🏊 สระว่ายน้ำ <span class="fsb-count" id="fc-pool"></span></label>
@@ -682,6 +688,7 @@ footer strong { color: white; }
       <label class="fsb-check"><input type="checkbox" onchange="applyFilters()" data-filter="coming"> 🔜 เร็วๆ นี้ <span class="fsb-count" id="fc-coming"></span></label>
 
       <button class="fsb-clear" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
+      </div><!-- /filterSidebarBody -->
     </div>
 
     <!-- Villa list -->
@@ -994,6 +1001,28 @@ function matchesFilters(villa, filters) {
   if (!filters.length) return true;
   return filters.every(key => (FILTER_FNS[key]||(() => true))(villa));
 }
+
+window.toggleFilterSidebar = function() {
+  const sb = document.getElementById('filterSidebar');
+  const icon = document.getElementById('filterToggleIcon');
+  sb.classList.toggle('open');
+  if (icon) icon.textContent = sb.classList.contains('open') ? '▲' : '▼';
+};
+
+// Show toggle icon on mobile
+function initFilterMobile() {
+  const icon = document.getElementById('filterToggleIcon');
+  if (!icon) return;
+  if (window.innerWidth <= 700) {
+    icon.style.display = 'inline';
+  } else {
+    icon.style.display = 'none';
+    document.getElementById('filterSidebar').classList.remove('open');
+    document.getElementById('filterSidebarBody').style.display = '';
+  }
+}
+window.addEventListener('resize', initFilterMobile);
+document.addEventListener('DOMContentLoaded', initFilterMobile);
 
 window.applyFilters = function() {
   renderVillas();
