@@ -1051,8 +1051,8 @@ setTimeout(()=>{
   };
 }, 50);
 
-</script>
-<script>
+
+
 window.doLogin=function(){
   const id=document.getElementById('loginId').value.trim(),pass=document.getElementById('loginPass').value,err=document.getElementById('loginErr');
   if(id==='adminathome'&&pass==='admin123'){sessionStorage.setItem('adminLoggedIn','1');document.getElementById('loginScreen').style.display='none';document.getElementById('adminShell').style.display='block';err.style.display='none';}
@@ -1336,5 +1336,6 @@ async function _uploadPreviewItem(item) {
 document.addEventListener('DOMContentLoaded', _setupUpload);
 
 </script>
+
 </body>
 </html>
