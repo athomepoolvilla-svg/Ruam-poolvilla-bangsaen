@@ -450,7 +450,7 @@ tbody tr:hover td { background:var(--cream2); }
   font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
   opacity: 0; transition: opacity 0.15s;
 }
-.up-photo:hover .up-photo-del { opacity: 1; }
+/* .up-photo:hover .up-photo-del { opacity: 1; } -- only show in edit mode */
 .up-photo-num {
   position: absolute; bottom: 4px; left: 5px;
   font-size: 10px; font-weight: 700; color: white;
@@ -1165,7 +1165,7 @@ function _renderUploadedPhotos() {
     return `<div class="up-photo" style="${item.isHidden ? 'opacity:0.5;' : ''}">
       <img src="${item.url}" alt="" onerror="this.src='https://placehold.co/100/f3f4f6/9ca3af?text=${i+1}'">
       ${hiddenOverlay}
-      <button class="up-photo-del" onclick="${delFn}" title="ลบรูป" style="${delStyle}">✕</button>
+      <button class="up-photo-del" onclick="${delFn}" title="ลบรูป" style="opacity:${editMode?1:0};pointer-events:${editMode?'auto':'none'};">✕</button>
       ${restoreBtn}
       <span class="up-photo-num">${i+1}</span>
       ${badge}
