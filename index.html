@@ -274,20 +274,21 @@ body {
 
 /* ─── VILLA GRID ─── */
 #villaGrid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 22px; padding: 10px 28px 0;
-  max-width: 1100px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 0 28px 0; max-width: 1000px; margin: 0 auto;
 }
-@media (max-width: 900px) { #villaGrid { grid-template-columns: repeat(2, 1fr); padding: 10px 16px 0; } }
-@media (max-width: 560px) { #villaGrid { grid-template-columns: repeat(2, 1fr); padding: 10px 10px 0; gap: 10px; } }
+@media (max-width: 900px) { #villaGrid { padding: 0 16px; } }
+@media (max-width: 560px) { #villaGrid { padding: 0 10px; gap: 10px; } }
 
 .villa-thumb {
-  background: white; border-radius: 12px; overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08); cursor: pointer;
-  transition: transform 0.22s, box-shadow 0.22s;
-  animation: fadeUp 0.5s ease both; position: relative;
-  text-decoration: none; display: block; border: 1px solid #f0f0f0;
+  display: flex; flex-direction: row;
+  background: white; border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  overflow: hidden; text-decoration: none;
+  color: inherit; transition: box-shadow 0.2s, transform 0.2s;
+  border: 1px solid #e8edf2; min-height: 200px;
 }
+
 .villa-thumb:nth-child(2) { animation-delay: 0.1s; }
 .villa-thumb:nth-child(3) { animation-delay: 0.2s; }
 .villa-thumb:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.13); }
@@ -308,18 +309,18 @@ body {
 }
 @keyframes badgePop { from{opacity:0;transform:scale(0.5);} to{opacity:1;transform:scale(1);} }
 
-.thumb-img-wrap { width: 100%; height: 210px; overflow: hidden; position: relative; }
-@media (max-width: 560px) { .thumb-img-wrap { height: 130px; } }
+.thumb-img-wrap { width: 280px; min-width: 280px; height: 100%; min-height: 200px; overflow: hidden; position: relative; flex-shrink: 0; }
+@media (max-width: 600px) { .villa-thumb { flex-direction: column; } .thumb-img-wrap { width: 100%; min-width: unset; height: 200px; min-height: unset; } }
 .thumb-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; display: block; }
 .villa-thumb:hover .thumb-img-wrap img { transform: scale(1.07); }
 .thumb-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,20,50,0.55) 100%); display: flex; align-items: flex-end; padding: 14px; }
-.thumb-info { padding: 10px 12px 12px; }
-.thumb-name { font-size: 15px; font-weight: 400; color: #111; margin-bottom: 3px; }
+.thumb-info { padding: 16px 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.thumb-name { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 6px; }
 @media (max-width: 560px) { .thumb-name { font-size: 14px; } .thumb-price { font-size: 17px !important; } .thumb-cap { font-size: 10px; } .thumb-cta { font-size: 11px; padding: 6px 10px; } }
-.thumb-price-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.thumb-price { font-size: 18px; font-weight: 400; color: #0077b6; line-height: 1; }
+.thumb-price-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+.thumb-price { font-size: 22px; font-weight: 800; color: #0077b6; line-height: 1; }
 .thumb-price small { font-size: 12px; font-weight: 400; color: #888; }
-.thumb-cap { font-size: 11px; color: #888; margin-top: 3px; }
+.thumb-cap { font-size: 12px; color: #555; margin-top: 4px; line-height: 1.6; }
 .thumb-cta {
   display: inline-flex; align-items: center; gap: 5px; padding: 7px 16px;
   background: linear-gradient(135deg, #00c4e0, #009eb8);
@@ -451,7 +452,7 @@ footer strong { color: white; }
     <span></span><span></span><span></span>
   </button>
   <div class="nav-logo-wrap">
-    <div class="nav-brand">POOL VILLA BANGSAEN<small>at the beach</small></div>
+    <div class="nav-brand">RUAM POOL VILLA<small>Bangsaen</small></div>
   </div>
   <a href="https://www.facebook.com/groups/poolvilla.bangsaen.beach" target="_blank" rel="noopener"
     style="margin-left:auto;display:flex;align-items:center;gap:7px;background:#1877f2;border-radius:20px;padding:6px 10px 6px 8px;text-decoration:none;flex-shrink:0;max-width:calc(100vw - 220px);">
@@ -754,16 +755,16 @@ const DEFAULT_PHOTOS = {
 const VILLA_PAGES = { 1:'villa1.html',2:'villa2.html',3:'villa3.html',4:'villa4.html',5:'villa5.html',6:'villa6.html',7:'villa7.html',8:'villa8.html',9:'villa9.html',10:'villa10.html' };
 
 const VILLA_META = [
-  { id:1, name:'POOL VILLA',  priceBase:6900, capacity:'พักได้ 10–15 ท่าน' },
-  { id:2, name:'BEACH VILLA', priceBase:3900, capacity:'พักได้ 10 ท่าน' },
-  { id:3, name:'DRIFT VILLA', priceBase:6900, capacity:'พักได้ 16 ท่าน เสริมสูงสุด 20 ท่าน' },
-  { id:4, name:'VILLA 4',  priceBase:0, capacity:'เร็วๆ นี้', comingSoon:true },
-  { id:5, name:'VILLA 5',  priceBase:0, capacity:'เร็วๆ นี้', comingSoon:true },
-  { id:6, name:'VILLA 6',  priceBase:0, capacity:'เร็วๆ นี้', comingSoon:true },
-  { id:7, name:'VILLA 7',  priceBase:0, capacity:'เร็วๆ นี้', comingSoon:true },
-  { id:8, name:'VILLA 8',  priceBase:0, capacity:'เร็วๆ นี้', comingSoon:true },
-  { id:9, name:'VILLA 9',  priceBase:0, capacity:'เร็วๆ นี้', comingSoon:true },
-  { id:10,name:'VILLA 10', priceBase:0, capacity:'เร็วๆ นี้', comingSoon:true },
+  { id:1, name:'At Home Pool Villa', sub:'พูลวิลล่าบางแสน', priceBase:6900, capacity:'10–15 ท่าน', beds:5, baths:6, features:['🏊 สระว่ายน้ำ','🛝 สไลเดอร์','🎤 คาราโอเกะ','🎱 โต๊ะพูล','🚗 จอดรถ 6 คัน'] },
+  { id:2, name:'At Home Beach Villa', sub:'บ้านพักบางแสน', priceBase:3900, capacity:'8–10 ท่าน', beds:3, baths:5, features:['🎤 คาราโอเกะ','🎱 โต๊ะพูล','📺 Smart TV','❄️ แอร์ทุกห้อง','🚗 ที่จอดรถ'] },
+  { id:3, name:'At Home Drift Villa', sub:'พูลวิลล่าบางแสน', priceBase:6900, capacity:'10–16 ท่าน', beds:4, baths:5, features:['🏊 สระว่ายน้ำ','🛝 สไลเดอร์','🎤 คาราโอเกะ','🎱 โต๊ะพูล','🚗 จอดรถ 6 คัน'] },
+  { id:4, name:'VILLA 4',  sub:'', priceBase:0, capacity:'เร็วๆ นี้', beds:0, baths:0, features:[], comingSoon:true },
+  { id:5, name:'VILLA 5',  sub:'', priceBase:0, capacity:'เร็วๆ นี้', beds:0, baths:0, features:[], comingSoon:true },
+  { id:6, name:'VILLA 6',  sub:'', priceBase:0, capacity:'เร็วๆ นี้', beds:0, baths:0, features:[], comingSoon:true },
+  { id:7, name:'VILLA 7',  sub:'', priceBase:0, capacity:'เร็วๆ นี้', beds:0, baths:0, features:[], comingSoon:true },
+  { id:8, name:'VILLA 8',  sub:'', priceBase:0, capacity:'เร็วๆ นี้', beds:0, baths:0, features:[], comingSoon:true },
+  { id:9, name:'VILLA 9',  sub:'', priceBase:0, capacity:'เร็วๆ นี้', beds:0, baths:0, features:[], comingSoon:true },
+  { id:10,name:'VILLA 10', sub:'', priceBase:0, capacity:'เร็วๆ นี้', beds:0, baths:0, features:[], comingSoon:true },
 ];
 
 let villas = VILLA_META.map(m=>({...m, bookings:{}, photos:[...DEFAULT_PHOTOS[m.id]]}));
@@ -807,6 +808,17 @@ function buildThumb(villa){
   card.href = pageUrl; card.target = '_blank'; card.rel = 'noopener';
 
   const firstPhoto = villa.photos[0] || 'https://placehold.co/400x300/e8f4f8/aaa?text=Photo';
+  const featureChips = (villa.features||[]).map(f =>
+    `<span style="font-size:11px;background:#f0f9ff;color:#0077b6;border-radius:20px;padding:3px 10px;border:1px solid #bae6fd;">${f}</span>`
+  ).join('');
+
+  const statsRow = villa.beds ? `
+    <div style="display:flex;gap:14px;margin:8px 0;font-size:12px;color:#555;">
+      <span>🛏️ ${villa.beds} ห้องนอน</span>
+      <span>🚿 ${villa.baths} ห้องน้ำ</span>
+      <span>👥 ${villa.capacity}</span>
+    </div>` : '';
+
   card.innerHTML = isCS ? `
     <div class="thumb-img-wrap" style="position:relative;">
       <img src="${firstPhoto}" alt="${villa.name}" style="filter:blur(2px);opacity:0.5;">
@@ -818,24 +830,28 @@ function buildThumb(villa){
     <div class="thumb-info">
       <div class="thumb-name" style="color:#aaa;">${villa.name}</div>
       <div class="thumb-cap">กำลังเพิ่มบ้านพักใหม่เร็วๆ นี้</div>
-      <div class="thumb-price-row" style="margin-top:8px;">
+      <div class="thumb-price-row">
         <div style="font-size:11px;color:#bbb;">ติดตามเพื่อรับข่าวสาร</div>
         <span class="thumb-cta">ดูรายละเอียด</span>
       </div>
     </div>` : `
     <div class="thumb-img-wrap">
       <img src="${firstPhoto}" alt="${villa.name}" onerror="this.src='https://placehold.co/400x300/e8f4f8/aaa?text=Photo'">
-      <div class="thumb-overlay"></div>
     </div>
     <div class="thumb-info">
-      <div class="thumb-name">${villa.name}</div>
-      <div class="thumb-cap">${villa.capacity}</div>
-      <div class="thumb-price-row" style="margin-top:8px;">
+      <div>
+        <div style="font-size:11px;color:#0077b6;font-weight:700;margin-bottom:4px;">AT HOME · บางแสน</div>
+        <div class="thumb-name">${villa.name}</div>
+        ${villa.sub ? `<div style="font-size:12px;color:#777;margin-bottom:2px;">${villa.sub}</div>` : ''}
+        ${statsRow}
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;">${featureChips}</div>
+      </div>
+      <div class="thumb-price-row">
         <div>
-          <div style="font-size:10px;color:#aaa;font-weight:600;">ราคาเริ่มต้น</div>
-          <div class="thumb-price">${villa.priceBase.toLocaleString()} <small>บาท/คืน</small></div>
+          <div style="font-size:10px;color:#999;font-weight:600;margin-bottom:2px;">ราคาเริ่มต้น/คืน</div>
+          <div class="thumb-price">${villa.priceBase.toLocaleString()} <small>บาท</small></div>
         </div>
-        <span class="thumb-cta">ดูรายละเอียด</span>
+        <span class="thumb-cta">ดูรายละเอียด →</span>
       </div>
     </div>`;
   return card;
