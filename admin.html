@@ -705,16 +705,16 @@ tbody tr:hover td { background:var(--cream2); }
             <!-- Preview queue -->
             <div class="preview-queue" id="previewQueue"></div>
             <div class="upload-actions" id="uploadActions" style="display:none;">
-              <button class="btn-upload-all" id="btnUploadAll" onclick="uploadAllFiles()">⬆️ อัพโหลดทั้งหมด</button>
-              <button class="btn-clear-all" onclick="clearPreviewQueue()">ล้าง</button>
+              <button class="btn-upload-all" id="btnUploadAll" onclick="window.uploadAllFiles()">⬆️ อัพโหลดทั้งหมด</button>
+              <button class="btn-clear-all" onclick="window.clearPreviewQueue()">ล้าง</button>
             </div>
             <!-- Uploaded photos -->
             <div id="uploadedPhotosWrap">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;margin-top:16px;">
                 <div style="font-size:12px;font-weight:700;color:var(--ink3);">รูปภาพทั้งหมด <span id="uploadedCount"></span></div>
                 <div style="display:flex;gap:6px;">
-                  <button onclick="openVillaPage()" style="font-size:11px;padding:4px 12px;border-radius:8px;border:1.5px solid #d1d5db;background:#f9fafb;cursor:pointer;color:#374151;">🔗 ดูหน้าเว็บ</button>
-                  <button id="btnEditMode" onclick="toggleEditMode()" style="font-size:11px;padding:4px 12px;border-radius:8px;border:1.5px solid #e5e7eb;background:white;cursor:pointer;color:var(--ink3);">✏️ แก้ไข</button>
+                  <button onclick="window.openVillaPage()" style="font-size:11px;padding:4px 12px;border-radius:8px;border:1.5px solid #d1d5db;background:#f9fafb;cursor:pointer;color:#374151;">🔗 ดูหน้าเว็บ</button>
+                  <button id="btnEditMode" onclick="window.toggleEditMode()" style="font-size:11px;padding:4px 12px;border-radius:8px;border:1.5px solid #e5e7eb;background:white;cursor:pointer;color:var(--ink3);">✏️ แก้ไข</button>
                 </div>
               </div>
               <div class="uploaded-photos-grid" id="uploadedPhotosGrid"></div>
@@ -786,6 +786,7 @@ function daysInMonth(y,m){return new Date(y,m,0).getDate();}
 function firstDay(y,m){return new Date(y,m-1,1).getDay();}
 function todayKey(){const t=new Date();return `${t.getFullYear()}-${t.getMonth()+1}-${t.getDate()}`;}
 function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='show '+(type==='error'?'error':'success');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);}
+window.showToast = showToast;
 function renderAdminCal(){
   document.getElementById('adminCalTitle').textContent=`${MONTH_TH[adminMonth-1]} ${adminYear}`;
   const body=document.getElementById('adminCalBody');body.innerHTML='';
