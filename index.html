@@ -539,7 +539,7 @@ footer strong { color: white; }
     <span></span><span></span><span></span>
   </button>
   <div class="nav-logo-wrap">
-    <div class="nav-brand">RUAM POOL VILLA<small>Bangsaen</small></div>
+    <div class="nav-brand">POOL VILLA<small>Bangsaen</small></div>
   </div>
   <a href="https://www.facebook.com/groups/poolvilla.bangsaen.beach" target="_blank" rel="noopener"
     style="margin-left:auto;display:flex;align-items:center;gap:7px;background:#1877f2;border-radius:20px;padding:6px 10px 6px 8px;text-decoration:none;flex-shrink:0;max-width:calc(100vw - 220px);">
@@ -572,9 +572,9 @@ footer strong { color: white; }
 <!-- VILLAS SECTION -->
 <section id="section-villas">
   <div class="villas-header">
-    <div class="villas-eyebrow">AT HOME POOL VILLA – BANGSAEN</div>
+    <div class="villas-eyebrow">POOL VILLA BANGSAEN</div>
     <div class="villas-title">บ้านพักพูลวิลล่าบางแสน</div>
-    <div class="villas-desc">รวบรวมบ้านพักบางแสน พูลวิลล่าไว้ที่นี่แล้ว ศูนย์รวมบ้านพักพูลวิลล่าที่บางแสนที่มีสระว่ายน้ำส่วนตัว ตอบโจทย์ลูกค้าที่ต้องการพื้นที่ส่วนตัว มานั่งปาร์ตี้สังสรรค์กัน บ้านทุกหลังของเราเป็นสระว่ายน้ำส่วนตัว พูลวิลล่าบางแสน ชลบุรี</div>
+    <div class="villas-desc">รวบรวมบ้านพักบางแสน พูลวิลล่าไว้ที่นี่แล้ว ศูนย์รวมบ้านพักพูลวิลล่าที่บางแสนที่มีสระว่ายน้ำส่วนตัว ตอบโจทย์ลูกค้าที่ต้องการพื้นที่ส่วนตัว มานั่งปาร์ตี้สังสรรค์กัน พูลวิลล่าบางแสน ชลบุรี</div>
   </div>
   <div id="loadingOverlay"><div class="spinner"></div><div>กำลังโหลดข้อมูล...</div></div>
 
@@ -860,7 +860,16 @@ const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 const DEFAULT_PHOTOS = {
-  1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[]
+  1:['photo/หลัง1/1.jpg','photo/หลัง1/2.jpg','photo/หลัง1/3.jpg','photo/หลัง1/4.jpg'],
+  2:['photo/หลัง2/1.jpg','photo/หลัง2/2.jpg','photo/หลัง2/3.jpg','photo/หลัง2/4.jpg'],
+  3:['photo/หลัง3/1.jpg','photo/หลัง3/2.jpg','photo/หลัง3/3.jpg','photo/หลัง3/4.jpg'],
+  4:[],
+  5:[],
+  6:[],
+  7:[],
+  8:[],
+  9:['https://placehold.co/400x300/e8f4f8/aaa?text=Coming+Soon'],
+  10:['https://placehold.co/400x300/e8f4f8/aaa?text=Coming+Soon'],
 };
 
 const VILLA_PAGES = { 1:'villa1.html',2:'villa2.html',3:'villa3.html',4:'villa4.html',5:'villa5.html',6:'villa6.html',7:'villa7.html',8:'villa8.html',9:'villa9.html',10:'villa10.html' };
@@ -891,7 +900,25 @@ function loadFirebase(){
       if(snap.exists()){
         const d=snap.data();
         villa.bookings=d.bookings||{};
-        villa.photos = d.photos||[];
+        const dynPhotos = d.photos||[];
+        const cats = d.photoCategories||{};
+        const staticPhotos = DEFAULT_PHOTOS[meta.id]||[];
+        const allPhotos = [...staticPhotos, ...dynPhotos];
+        // Find cover photo (category = 'cover')
+        let coverUrl = null;
+        for(const [k,v] of Object.entries(cats)){
+          if(v==='cover'){
+            const idx = Number(k) - 1;
+            coverUrl = allPhotos[idx] || null;
+            break;
+          }
+        }
+        // Put cover first, then rest
+        if(coverUrl){
+          villa.photos = [coverUrl, ...allPhotos.filter(p=>p!==coverUrl)];
+        } else {
+          villa.photos = allPhotos;
+        }
       } else {
         villa.bookings={};
         villa.photos=[...DEFAULT_PHOTOS[meta.id]||[]];
