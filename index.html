@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AT HOME POOL VILLA – บ้านพักบางแสน</title>
+<title>POOL VILLA BANGSAEN</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Mitr:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -294,6 +294,7 @@ body {
 .villa-thumb:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.13); }
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
 
+.villa-thumb { position: relative; }
 .villa-thumb.search-match { outline: 3px solid #00d4f5; box-shadow: 0 0 0 6px rgba(0,212,245,0.18), 0 8px 32px rgba(0,0,0,0.14); }
 .villa-thumb.search-dim { opacity: 0.38; filter: grayscale(40%); transform: scale(0.98); }
 .coming-soon-card { cursor: pointer; }
@@ -780,7 +781,7 @@ footer strong { color: white; }
 <footer>
   <div class="footer-inner">
     <div class="footer-col">
-      <div class="footer-col-title">🏠 AT HOME POOL VILLA</div>
+      <div class="footer-col-title">🏠 POOL VILLA</div>
       <p>บ้านพักพร้อมสระว่ายน้ำส่วนตัว<br>บรรยากาศดี ใกล้ทะเลบางแสน<br>ชลบุรี · ตอบทุกวัน 08:00–22:00 น.</p>
     </div>
     <div class="footer-col">
@@ -814,7 +815,7 @@ footer strong { color: white; }
     </div>
   </div>
   <div class="footer-bottom">
-    © 2025 <strong>AT HOME POOL VILLA</strong> · บางแสน ชลบุรี · All rights reserved.
+    © 2025 <strong>POOL VILLA</strong> · บางแสน ชลบุรี · All rights reserved.
   </div>
 </footer>
 
@@ -860,16 +861,7 @@ const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 const DEFAULT_PHOTOS = {
-  1:['photo/หลัง1/1.jpg','photo/หลัง1/2.jpg','photo/หลัง1/3.jpg','photo/หลัง1/4.jpg'],
-  2:['photo/หลัง2/1.jpg','photo/หลัง2/2.jpg','photo/หลัง2/3.jpg','photo/หลัง2/4.jpg'],
-  3:['photo/หลัง3/1.jpg','photo/หลัง3/2.jpg','photo/หลัง3/3.jpg','photo/หลัง3/4.jpg'],
-  4:[],
-  5:[],
-  6:[],
-  7:[],
-  8:[],
-  9:['https://placehold.co/400x300/e8f4f8/aaa?text=Coming+Soon'],
-  10:['https://placehold.co/400x300/e8f4f8/aaa?text=Coming+Soon'],
+  1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[]
 };
 
 const VILLA_PAGES = { 1:'villa1.html',2:'villa2.html',3:'villa3.html',4:'villa4.html',5:'villa5.html',6:'villa6.html',7:'villa7.html',8:'villa8.html',9:'villa9.html',10:'villa10.html' };
@@ -900,25 +892,7 @@ function loadFirebase(){
       if(snap.exists()){
         const d=snap.data();
         villa.bookings=d.bookings||{};
-        const dynPhotos = d.photos||[];
-        const cats = d.photoCategories||{};
-        const staticPhotos = DEFAULT_PHOTOS[meta.id]||[];
-        const allPhotos = [...staticPhotos, ...dynPhotos];
-        // Find cover photo (category = 'cover')
-        let coverUrl = null;
-        for(const [k,v] of Object.entries(cats)){
-          if(v==='cover'){
-            const idx = Number(k) - 1;
-            coverUrl = allPhotos[idx] || null;
-            break;
-          }
-        }
-        // Put cover first, then rest
-        if(coverUrl){
-          villa.photos = [coverUrl, ...allPhotos.filter(p=>p!==coverUrl)];
-        } else {
-          villa.photos = allPhotos;
-        }
+        villa.photos = d.photos||[];
       } else {
         villa.bookings={};
         villa.photos=[...DEFAULT_PHOTOS[meta.id]||[]];
@@ -933,7 +907,7 @@ function renderVillas(){
   grid.innerHTML = '';
   const showCount = window._showAll ? villas.length : 3;
   villas.slice(0, showCount).forEach(v => grid.appendChild(buildThumb(v)));
-  if(window._searchState && window.applyHighlightOnly) window.applyHighlightOnly();
+  if(window._searchState && window.applyHighlightOnly) setTimeout(window.applyHighlightOnly, 50);
 }
 window.renderVillas = renderVillas;
 
@@ -1124,7 +1098,8 @@ window.doSearch = function() {
   window._searchState = { availableIds, checkin, checkout, guests };
   if(!window._showAll){ window._showAll=true; renderVillas(); const btn=document.getElementById('showAllBtn'); if(btn){ btn.innerHTML='✕ แสดงน้อยลง'; btn.style.borderColor='#888'; btn.style.color='#888'; } }
   document.getElementById('section-villas').scrollIntoView({ behavior:'smooth', block:'start' });
-  setTimeout(()=>applyHighlight(), 300);
+  applyHighlight();
+  setTimeout(()=>applyHighlight(), 100);
 };
 
 function applyHighlight(){
@@ -1137,7 +1112,7 @@ function applyHighlight(){
     const oldBadge = c.querySelector('.avail-badge'); if(oldBadge) oldBadge.remove();
     if(availableIds.has(vid)){
       c.classList.add('search-match'); c.classList.remove('search-dim');
-      const badge = document.createElement('div'); badge.className='avail-badge'; badge.textContent='ว่าง'; c.appendChild(badge);
+      const badge = document.createElement('div'); badge.className='avail-badge'; badge.textContent='ว่าง'; const imgWrap = c.querySelector('.thumb-img-wrap'); (imgWrap||c).appendChild(badge);
     } else {
       c.classList.add('search-dim'); c.classList.remove('search-match');
     }
