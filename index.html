@@ -860,16 +860,7 @@ const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 const DEFAULT_PHOTOS = {
-  1:['photo/หลัง1/1.jpg','photo/หลัง1/2.jpg','photo/หลัง1/3.jpg','photo/หลัง1/4.jpg'],
-  2:['photo/หลัง2/1.jpg','photo/หลัง2/2.jpg','photo/หลัง2/3.jpg','photo/หลัง2/4.jpg'],
-  3:['photo/หลัง3/1.jpg','photo/หลัง3/2.jpg','photo/หลัง3/3.jpg','photo/หลัง3/4.jpg'],
-  4:[],
-  5:[],
-  6:[],
-  7:[],
-  8:[],
-  9:['https://placehold.co/400x300/e8f4f8/aaa?text=Coming+Soon'],
-  10:['https://placehold.co/400x300/e8f4f8/aaa?text=Coming+Soon'],
+  1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[]
 };
 
 const VILLA_PAGES = { 1:'villa1.html',2:'villa2.html',3:'villa3.html',4:'villa4.html',5:'villa5.html',6:'villa6.html',7:'villa7.html',8:'villa8.html',9:'villa9.html',10:'villa10.html' };
@@ -900,25 +891,7 @@ function loadFirebase(){
       if(snap.exists()){
         const d=snap.data();
         villa.bookings=d.bookings||{};
-        const dynPhotos = d.photos||[];
-        const cats = d.photoCategories||{};
-        const staticPhotos = DEFAULT_PHOTOS[meta.id]||[];
-        const allPhotos = [...staticPhotos, ...dynPhotos];
-        // Find cover photo (category = 'cover')
-        let coverUrl = null;
-        for(const [k,v] of Object.entries(cats)){
-          if(v==='cover'){
-            const idx = Number(k) - 1;
-            coverUrl = allPhotos[idx] || null;
-            break;
-          }
-        }
-        // Put cover first, then rest
-        if(coverUrl){
-          villa.photos = [coverUrl, ...allPhotos.filter(p=>p!==coverUrl)];
-        } else {
-          villa.photos = allPhotos;
-        }
+        villa.photos = d.photos||[];
       } else {
         villa.bookings={};
         villa.photos=[...DEFAULT_PHOTOS[meta.id]||[]];
