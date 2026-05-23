@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chilldee Pool Villa – บางแสน</title>
+<title>At Home Drift Villa – บางแสน</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -325,13 +325,11 @@ footer strong { color: white; }
 }
 .vb-main img, .vb-thumb img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform 0.3s;
 }
-.vb-main:hover img, .vb-thumb:hover img { transform: scale(1.04); }
 .vb-right {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 4px;
   overflow: hidden;
   height: 100%;
@@ -451,8 +449,8 @@ footer strong { color: white; }
       </svg>
     </span>
   </a>
-  <span class="back-title">CHILLDEE VILLA</span>
-  <span class="back-sub">· Chilldee Pool Villa</span>
+  <span class="back-title">DRIFT VILLA</span>
+  <span class="back-sub">· At Home Drift Villa</span>
   <a href="https://www.facebook.com/groups/poolvilla.bangsaen.beach" target="_blank" rel="noopener"
     style="margin-left:auto;display:flex;align-items:center;gap:7px;background:#1877f2;border-radius:20px;padding:6px 10px 6px 8px;text-decoration:none;flex-shrink:0;">
     <div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -475,22 +473,16 @@ footer strong { color: white; }
   </div>
   <div class="vb-right">
     <div class="vb-thumb" onclick="openFs(1)">
-      <img id="vbThumb1" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <img id="vbThumb1" src="" alt="" onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
     </div>
     <div class="vb-thumb" onclick="openFs(2)">
-      <img id="vbThumb2" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <img id="vbThumb2" src="" alt="" onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
     </div>
     <div class="vb-thumb" onclick="openFs(3)">
-      <img id="vbThumb3" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
-    </div>
-    <div class="vb-thumb" onclick="openFs(4)">
-      <img id="vbThumb4" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
-    </div>
-    <div class="vb-thumb" onclick="openFs(5)">
-      <img id="vbThumb5" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <img id="vbThumb3" src="" alt="" onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
     </div>
     <div class="vb-thumb" style="position:relative;" onclick="openGallery()">
-      <img id="vbThumb6" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <img id="vbThumb4" src="" alt="" onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
       <div class="vb-count-overlay" id="vbCountOverlay"></div>
     </div>
   </div>
@@ -499,9 +491,9 @@ footer strong { color: white; }
 <!-- ── VILLA HEADER ── -->
 <div class="villa-header-wrap">
   <div>
-    <div class="villa-badge" style="margin-bottom:6px;">🏡 หลังที่ 7</div>
-    <div class="villa-name" style="font-size:26px;">Chilldee Pool Villa</div>
-    <div class="villa-sub">พูลวิลล่าบางแสน · 2–3 ห้องนอน 3 ห้องน้ำ · รับได้ 7–28 ท่าน</div>
+    <div class="villa-badge" style="margin-bottom:6px;">🌊 หลังที่ 3</div>
+    <div class="villa-name" style="font-size:26px;">At Home Drift Villa</div>
+    <div class="villa-sub">4 ห้องนอน 5 ห้องน้ำ · สระว่ายน้ำ + สไลเดอร์ · รับได้ 16 ท่าน</div>
   </div>
 </div>
 
@@ -512,9 +504,9 @@ footer strong { color: white; }
       <div class="price-section">
         <div class="price-section-title">💰 ราคาที่พัก (ต่อคืน)</div>
         <table class="price-table">
-          <tr><td>จันทร์ – พฤหัสบดี</td><td>5,990 บาท</td></tr>
-          <tr><td>ศุกร์ / อาทิตย์</td><td>สอบถามเพิ่มเติม</td></tr>
-          <tr><td>เสาร์</td><td>สอบถามเพิ่มเติม</td></tr>
+          <tr><td>จันทร์ – พฤหัสบดี</td><td>6,900 บาท</td></tr>
+          <tr><td>ศุกร์ / อาทิตย์</td><td>7,900 บาท</td></tr>
+          <tr><td>เสาร์</td><td>9,900 บาท</td></tr>
           <tr><td>วันหยุดนักขัตฤกษ์</td><td>สอบถามเพิ่มเติม</td></tr>
         </table>
         <div class="price-note">⏰ Check-in 14:00 น. &nbsp;|&nbsp; Check-out ก่อน 11:00 น.</div>
@@ -532,7 +524,7 @@ footer strong { color: white; }
   <path d="M6 28V22a2 2 0 012-2"/>
   <path d="M58 28V22a2 2 0 00-2-2"/>
 </svg>
-            <span class="stat-num">3</span>
+            <span class="stat-num">4</span>
             <span class="stat-label">ห้องนอน</span>
           </div>
           <div class="stat-item">
@@ -543,7 +535,7 @@ footer strong { color: white; }
   <path d="M22 54l-3 6M42 54l3 6"/>
   <circle cx="28" cy="18" r="1.5" fill="#4b5563"/>
 </svg>
-            <span class="stat-num">3</span>
+            <span class="stat-num">5</span>
             <span class="stat-label">ห้องน้ำ</span>
           </div>
           <div class="stat-item">
@@ -555,7 +547,7 @@ footer strong { color: white; }
   <circle cx="52" cy="22" r="6"/>
   <path d="M62 50v-2a13 13 0 00-18-12"/>
 </svg>
-            <span class="stat-num">7–28</span>
+            <span class="stat-num">10–16</span>
             <span class="stat-label">คน</span>
           </div>
           <div class="stat-item">
@@ -566,11 +558,11 @@ footer strong { color: white; }
   <line x1="20" y1="44" x2="44" y2="44"/>
   <line x1="32" y1="36" x2="32" y2="52"/>
 </svg>
-            <span class="stat-num">3</span>
+            <span class="stat-num">6</span>
             <span class="stat-label">ที่จอดรถ</span>
           </div>
         </div>
-        <div class="note-box" style="margin-top:12px;">💡 มี 3 หลัง สามารถเปิดเชื่อมต่อกันได้ รับได้สูงสุด 28 ท่าน</div>
+        <div class="note-box" style="margin-top:12px;">💡 เกิน 10 ท่าน เสริมที่นอนได้ไม่มีค่าใช้จ่ายเพิ่ม (เสริมได้ 3 ฟุต ห้องละ 1 ชุด)</div>
       </div>
 
       <div class="sec-block">
@@ -586,7 +578,7 @@ footer strong { color: white; }
           ซอยห้วยกะปิ 18 ก่อนถึงแยกบางแสน
         </div>
         <div style="margin-top:10px;">
-          <a class="btn-map" href="https://www.google.com/maps?q=7WWF+5H3+ชิลดีพูลวิลล่า+@บางแสน" target="_blank" style="display:inline-flex;">📍 เปิด Google Maps</a>
+          <a class="btn-map" href="https://maps.app.goo.gl/TdTeZ435FJXrHZr46" target="_blank" style="display:inline-flex;">📍 เปิด Google Maps</a>
         </div>
       </div>
     </div>
@@ -708,7 +700,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-const VILLA_ID   = 7;
+const VILLA_ID   = 3;
 const PRICE_BASE = 6900;
 const DAY_LABELS = ['อา','จ','อ','พ','พฤ','ศ','ส'];
 const MONTH_NAMES_TH = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
@@ -764,14 +756,20 @@ function buildBanner() {
   if (!photos.length) return;
   const p = photos;
   const get = i => p[i] || p[p.length - 1] || '';
-  const ids = ['vbMain','vbThumb1','vbThumb2','vbThumb3','vbThumb4','vbThumb5','vbThumb6'];
-  ids.forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el) el.src = get(i);
-  });
+  const main = document.getElementById('vbMain');
+  if (main) main.src = get(0);
+  const t1 = document.getElementById('vbThumb1');
+  const t2 = document.getElementById('vbThumb2');
+  const t3 = document.getElementById('vbThumb3');
+  const t4 = document.getElementById('vbThumb4');
+  if (t1) t1.src = get(1);
+  if (t2) t2.src = get(2);
+  if (t3) t3.src = get(3);
+  if (t4) t4.src = get(4);
+  // Show all 4 thumbs always
   document.querySelectorAll('.vb-thumb').forEach(w => w.style.display = '');
   const ov = document.getElementById('vbCountOverlay');
-  if (ov) ov.textContent = p.length > 7 ? `+${p.length - 6}` : '';
+  if (ov) ov.textContent = p.length > 5 ? `+${p.length - 4}` : '';
 }
 
 function buildSlider() {
@@ -1021,14 +1019,14 @@ const AMENITY_CATS = [
 
 // ✅ = villa1 has it (all items above)
 const VILLA1_AMENITIES = {
-  pool:true, waterslide:false, pooltable:false, karaoke:true, parking:true,
-  ac:true, hotwater:true, bathtub:false, towel:true, toiletries:true,
+  pool:true, waterslide:true, pooltable:true, karaoke:true, parking:true,
+  ac:true, hotwater:true, bathtub:true, towel:true, toiletries:true,
   smarttv:true, internet:true, bbq:true,
-  cctv:false,
-  water:false, coffee:false, ice:false,
-  kettle:false, airfryer:false, microwave:false, ricecooker:false,
-  gasgrill:false, charcoal:false, toaster:false, stove:false,
-  pots:false, dishes:false, dishsoap:false, mortar:false,
+  cctv:true,
+  water:true, coffee:true, ice:true,
+  kettle:true, airfryer:true, microwave:true, ricecooker:true,
+  gasgrill:true, charcoal:true, toaster:true, stove:true,
+  pots:true, dishes:true, dishsoap:true, mortar:true,
 };
 
 function renderAmenities(villaAmenities) {

@@ -309,16 +309,37 @@ footer strong { color: white; }
 #villaBanner {
   margin-top: 54px;
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
   gap: 4px;
   height: 480px;
-  background: #111;
+  background: #f0f9ff;
   overflow: hidden;
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
   border-radius: 16px;
+}
+.vb-main {
+  overflow: hidden;
+  height: 100%;
+}
+.vb-main img, .vb-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.3s;
+}
+.vb-main:hover img, .vb-thumb:hover img { transform: scale(1.04); }
+.vb-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 4px;
+  overflow: hidden;
+  height: 100%;
+}
+.vb-thumb {
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
 }
 @media (max-width: 1156px) {
   #villaBanner { margin-left: 28px; margin-right: 28px; }
@@ -452,12 +473,26 @@ footer strong { color: white; }
   <div class="vb-main" onclick="openFs(0)">
     <img id="vbMain" src="" alt="main" onerror="this.src='https://placehold.co/800x480/e8f4f8/aaa?text=Photo'">
   </div>
-  <div class="vb-thumb" onclick="openFs(1)">
-    <img id="vbThumb1" src="" alt="" onerror="this.src='https://placehold.co/400x240/e8f4f8/aaa?text=Photo'">
-  </div>
-  <div class="vb-thumb" style="position:relative;" onclick="openGallery()">
-    <img id="vbThumb2" src="" alt="" onerror="this.src='https://placehold.co/400x240/e8f4f8/aaa?text=Photo'">
-    <div class="vb-count-overlay" id="vbCountOverlay"></div>
+  <div class="vb-right">
+    <div class="vb-thumb" onclick="openFs(1)">
+      <img id="vbThumb1" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+    </div>
+    <div class="vb-thumb" onclick="openFs(2)">
+      <img id="vbThumb2" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+    </div>
+    <div class="vb-thumb" onclick="openFs(3)">
+      <img id="vbThumb3" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+    </div>
+    <div class="vb-thumb" onclick="openFs(4)">
+      <img id="vbThumb4" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+    </div>
+    <div class="vb-thumb" onclick="openFs(5)">
+      <img id="vbThumb5" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+    </div>
+    <div class="vb-thumb" style="position:relative;" onclick="openGallery()">
+      <img id="vbThumb6" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <div class="vb-count-overlay" id="vbCountOverlay"></div>
+    </div>
   </div>
 </div>
 
@@ -680,10 +715,7 @@ const MONTH_NAMES_TH = ['มกราคม','กุมภาพันธ์','�
 const STATUS_LABEL = {available:'ว่าง',pending:'รอโอน',booked:'จองแล้ว',holiday:'วันหยุดนักขัตฤกษ์',maintenance:'ปิดปรับปรุง'};
 const STATUS_COLOR = {available:'#00a07a',pending:'#d4720a',booked:'#e03a4a',holiday:'#b89200',maintenance:'#d4720a'};
 
-const DEFAULT_PHOTOS = [
-  'photo/หลัง2/1.jpg','photo/หลัง2/2.jpg','photo/หลัง2/3.jpg',
-  'photo/หลัง2/4.jpg','photo/หลัง2/5.jpg','photo/หลัง2/6.jpg','photo/หลัง2/7.jpg','photo/หลัง2/8.jpg','photo/หลัง2/9.jpg'
-];
+const DEFAULT_PHOTOS = [];
 
 // ═══ PHOTO CATEGORY CONFIG ═══
 const PHOTO_CATS = {
@@ -730,19 +762,16 @@ onSnapshot(doc(db, 'villas', String(VILLA_ID)), snap => {
 // ─── Slider ───
 function buildBanner() {
   if (!photos.length) return;
-  const main = document.getElementById('vbMain');
-  const t1   = document.getElementById('vbThumb1');
-  const t2   = document.getElementById('vbThumb2');
-  const ov   = document.getElementById('vbCountOverlay');
-  if (main) main.src = photos[0] || '';
-  if (t1)   t1.src   = photos[1] || photos[0] || '';
-  if (t2)   t2.src   = photos[2] || photos[0] || '';
-  if (ov)   ov.textContent = photos.length > 3 ? `+${photos.length - 2}` : '';
-  // click on vb-main goes to gallery with idx 0
-  const vbMainWrap = document.querySelector('.vb-main');
-  if (vbMainWrap) vbMainWrap.onclick = () => openFs(0);
-  const vbThumb1Wrap = document.querySelector('.vb-thumb');
-  if (vbThumb1Wrap) vbThumb1Wrap.onclick = () => openFs(1);
+  const p = photos;
+  const get = i => p[i] || p[p.length - 1] || '';
+  const ids = ['vbMain','vbThumb1','vbThumb2','vbThumb3','vbThumb4','vbThumb5','vbThumb6'];
+  ids.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.src = get(i);
+  });
+  document.querySelectorAll('.vb-thumb').forEach(w => w.style.display = '');
+  const ov = document.getElementById('vbCountOverlay');
+  if (ov) ov.textContent = p.length > 7 ? `+${p.length - 6}` : '';
 }
 
 function buildSlider() {

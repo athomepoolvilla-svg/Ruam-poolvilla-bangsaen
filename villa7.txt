@@ -325,13 +325,11 @@ footer strong { color: white; }
 }
 .vb-main img, .vb-thumb img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform 0.3s;
 }
-.vb-main:hover img, .vb-thumb:hover img { transform: scale(1.04); }
 .vb-right {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 4px;
   overflow: hidden;
   height: 100%;
@@ -475,22 +473,16 @@ footer strong { color: white; }
   </div>
   <div class="vb-right">
     <div class="vb-thumb" onclick="openFs(1)">
-      <img id="vbThumb1" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <img id="vbThumb1" src="" alt="" onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
     </div>
     <div class="vb-thumb" onclick="openFs(2)">
-      <img id="vbThumb2" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <img id="vbThumb2" src="" alt="" onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
     </div>
     <div class="vb-thumb" onclick="openFs(3)">
-      <img id="vbThumb3" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
-    </div>
-    <div class="vb-thumb" onclick="openFs(4)">
-      <img id="vbThumb4" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
-    </div>
-    <div class="vb-thumb" onclick="openFs(5)">
-      <img id="vbThumb5" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <img id="vbThumb3" src="" alt="" onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
     </div>
     <div class="vb-thumb" style="position:relative;" onclick="openGallery()">
-      <img id="vbThumb6" src="" alt="" onerror="this.src='https://placehold.co/300x160/e8f4f8/aaa?text=Photo'">
+      <img id="vbThumb4" src="" alt="" onerror="this.src='https://placehold.co/300x200/e8f4f8/aaa?text=Photo'">
       <div class="vb-count-overlay" id="vbCountOverlay"></div>
     </div>
   </div>
@@ -764,14 +756,20 @@ function buildBanner() {
   if (!photos.length) return;
   const p = photos;
   const get = i => p[i] || p[p.length - 1] || '';
-  const ids = ['vbMain','vbThumb1','vbThumb2','vbThumb3','vbThumb4','vbThumb5','vbThumb6'];
-  ids.forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el) el.src = get(i);
-  });
+  const main = document.getElementById('vbMain');
+  if (main) main.src = get(0);
+  const t1 = document.getElementById('vbThumb1');
+  const t2 = document.getElementById('vbThumb2');
+  const t3 = document.getElementById('vbThumb3');
+  const t4 = document.getElementById('vbThumb4');
+  if (t1) t1.src = get(1);
+  if (t2) t2.src = get(2);
+  if (t3) t3.src = get(3);
+  if (t4) t4.src = get(4);
+  // Show all 4 thumbs always
   document.querySelectorAll('.vb-thumb').forEach(w => w.style.display = '');
   const ov = document.getElementById('vbCountOverlay');
-  if (ov) ov.textContent = p.length > 7 ? `+${p.length - 6}` : '';
+  if (ov) ov.textContent = p.length > 5 ? `+${p.length - 4}` : '';
 }
 
 function buildSlider() {
